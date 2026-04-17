@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MrCooper Round 2 - Complete Tech Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1e2d45;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent3: #10b981;
+  --accent4: #f59e0b;
+  --accent5: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --code-bg: #0d1117;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Sora',sans-serif; line-height:1.7; }
+
+/* HEADER */
+.hero {
+  background: linear-gradient(135deg, #0a0e1a 0%, #0f172a 40%, #1e1040 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 70%);
+}
+.hero h1 { font-size:2.5rem; font-weight:800; letter-spacing:-1px; position:relative; }
+.hero h1 span { color:var(--accent); }
+.hero p { color:var(--muted); font-size:1rem; margin-top:.5rem; position:relative; }
+.badge { display:inline-block; background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--accent); border-radius:999px; padding:.2rem .8rem; font-size:.75rem; font-family:'JetBrains Mono',monospace; margin-bottom:1rem; }
+
+/* NAV */
+nav {
+  position: sticky; top:0; z-index:100;
+  background: rgba(10,14,26,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: .75rem 1rem;
+}
+nav a {
+  display: inline-block;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing:.5px;
+  padding: .4rem .9rem;
+  border-radius: 6px;
+  margin-right:.3rem;
+  transition: all .2s;
+  text-transform: uppercase;
+}
+nav a:hover, nav a.active { color:var(--accent); background:rgba(0,212,255,0.08); }
+
+/* LAYOUT */
+.container { max-width:1400px; margin:0 auto; padding:2rem 1.5rem; }
+
+/* APP TABS */
+.app-tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+.app-tab {
+  padding:.5rem 1.2rem; border-radius:8px; border:1px solid var(--border);
+  background:var(--surface); color:var(--muted); cursor:pointer;
+  font-size:.82rem; font-weight:600; transition:all .2s; font-family:'Sora',sans-serif;
+}
+.app-tab.active, .app-tab:hover {
+  background:var(--surface2); color:var(--text); border-color:var(--accent);
+}
+.app-content { display:none; }
+.app-content.active { display:block; }
+
+/* SECTION TABS */
+.section-tabs { display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem; }
+.sec-tab {
+  padding:.4rem 1rem; border-radius:6px; border:1px solid transparent;
+  background:transparent; color:var(--muted); cursor:pointer;
+  font-size:.8rem; font-weight:600; transition:all .2s; font-family:'Sora',sans-serif;
+}
+.sec-tab.active { background:rgba(124,58,237,0.15); color:#a78bfa; border-color:rgba(124,58,237,0.4); }
+.sec-tab:hover:not(.active) { color:var(--text); background:var(--surface2); }
+.sec-content { display:none; }
+.sec-content.active { display:block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* CARDS */
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;
+}
+.card h3 { font-size:1rem; font-weight:700; color:var(--accent); margin-bottom:1rem; display:flex; align-items:center; gap:.5rem; }
+.card h4 { font-size:.9rem; font-weight:600; color:var(--accent4); margin:.8rem 0 .4rem; }
+
+/* CODE BLOCKS */
+pre {
+  background:var(--code-bg); border:1px solid var(--border);
+  border-radius:8px; padding:1.2rem; overflow-x:auto;
+  font-family:'JetBrains Mono',monospace; font-size:.78rem;
+  line-height:1.6; margin:.5rem 0;
+}
+.kw { color:#ff79c6; }
+.cl { color:#8be9fd; }
+.fn { color:#50fa7b; }
+.st { color:#f1fa8c; }
+.cm { color:#6272a4; }
+.nm { color:#bd93f9; }
+.op { color:#ff6e6e; }
+.dtype { color:#ffb86c; }
+
+/* UML DIAGRAMS - SVG based text art */
+.diagram-box {
+  background:var(--code-bg); border:1px solid var(--border);
+  border-radius:8px; padding:1.2rem; overflow-x:auto;
+  font-family:'JetBrains Mono',monospace; font-size:.73rem;
+  line-height:1.5; color:#a0c4ff; white-space:pre;
+  margin:.5rem 0;
+}
+
+/* GRID */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
+@media(max-width:900px) { .grid2,.grid3 { grid-template-columns:1fr; } }
+
+/* ARCH DIAGRAM */
+.arch-row { display:flex; gap:1rem; align-items:center; justify-content:center; flex-wrap:wrap; margin:.5rem 0; }
+.arch-box {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; padding:.7rem 1.2rem; font-size:.78rem; text-align:center;
+  min-width:110px;
+}
+.arch-box.highlight { border-color:var(--accent); color:var(--accent); }
+.arch-box.green { border-color:var(--accent3); color:var(--accent3); }
+.arch-box.purple { border-color:#a78bfa; color:#a78bfa; }
+.arch-box.yellow { border-color:var(--accent4); color:var(--accent4); }
+.arch-box.red { border-color:var(--accent5); color:var(--accent5); }
+.arch-arrow { color:var(--muted); font-size:1.2rem; }
+.layer-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:.3rem 0 .1rem; }
+
+/* TABLE */
+table { width:100%; border-collapse:collapse; font-size:.8rem; }
+th { background:var(--surface2); color:var(--accent); padding:.6rem .8rem; text-align:left; border:1px solid var(--border); font-size:.75rem; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:.5rem .8rem; border:1px solid var(--border); color:var(--text); vertical-align:top; }
+tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+
+/* TAGS */
+.tag { display:inline-block; padding:.15rem .5rem; border-radius:4px; font-size:.68rem; font-weight:600; margin:.1rem; font-family:'JetBrains Mono',monospace; }
+.tag-blue { background:rgba(0,212,255,0.1); color:var(--accent); border:1px solid rgba(0,212,255,0.2); }
+.tag-green { background:rgba(16,185,129,0.1); color:var(--accent3); border:1px solid rgba(16,185,129,0.2); }
+.tag-purple { background:rgba(124,58,237,0.1); color:#a78bfa; border:1px solid rgba(124,58,237,0.2); }
+.tag-yellow { background:rgba(245,158,11,0.1); color:var(--accent4); border:1px solid rgba(245,158,11,0.2); }
+
+/* TIPS */
+.tip { background:rgba(0,212,255,0.05); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:.8rem 1rem; margin:.5rem 0; font-size:.82rem; }
+.warn { background:rgba(245,158,11,0.05); border-left:3px solid var(--accent4); border-radius:0 8px 8px 0; padding:.8rem 1rem; margin:.5rem 0; font-size:.82rem; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+.section-header { font-size:1.3rem; font-weight:700; margin:1.5rem 0 1rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
+.pill { display:inline-block; background:var(--surface2); border:1px solid var(--border); border-radius:999px; padding:.2rem .7rem; font-size:.72rem; color:var(--muted); margin:.2rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">🎯 MrCooper Round 2 — Complete Prep Kit</div>
+  <h1>Tech Interview <span>Master Reference</span></h1>
+  <p>UML · System Design · SQL · ER Diagrams · Java OOP + DSA — All 6 Applications</p>
+</div>
+
+<nav id="mainNav">
+  <a href="#" onclick="showApp('banking')" class="active" id="nav-banking">🏦 Banking</a>
+  <a href="#" onclick="showApp('ecommerce')" id="nav-ecommerce">🛒 E-Commerce</a>
+  <a href="#" onclick="showApp('streaming')" id="nav-streaming">▶️ Streaming</a>
+  <a href="#" onclick="showApp('delivery')" id="nav-delivery">🚚 Delivery</a>
+  <a href="#" onclick="showApp('messaging')" id="nav-messaging">💬 Messaging</a>
+  <a href="#" onclick="showApp('library')" id="nav-library">📚 Library</a>
+</nav>
+
+<div class="container">
+
+<!-- ==================== BANKING ==================== -->
+<div id="app-banking" class="app-content active">
+  <div class="section-tabs">
+    <button class="sec-tab active" onclick="showSection('banking','uml')">📐 UML Diagrams</button>
+    <button class="sec-tab" onclick="showSection('banking','sysdesign')">🏗 System Design</button>
+    <button class="sec-tab" onclick="showSection('banking','sql')">🗄 SQL + ER</button>
+    <button class="sec-tab" onclick="showSection('banking','java')">☕ Java OOP + DSA</button>
+  </div>
+
+  <!-- UML -->
+  <div id="banking-uml" class="sec-content active">
+    <div class="section-header">Banking Application — UML Diagrams</div>
+
+    <div class="card">
+      <h3>📦 Class Diagram</h3>
+      <div class="diagram-box">
++------------------+          +---------------------+          +------------------+
+|    <<abstract>>  |          |      Account        |          |   Transaction    |
+|      Person      |          +---------------------+          +------------------+
++------------------+          | -accountId: String  |◄---------|  -txnId: String  |
+| -id: String      |          | -balance: double    |          | -amount: double  |
+| -name: String    |          | -accountType: Enum  |          | -type: TxnType   |
+| -email: String   |          | -status: Status     |          | -timestamp: Date |
+| -phone: String   |          | -createdAt: Date    |          | -fromAcc: String |
++------------------+          +---------------------+          | -toAcc: String   |
+       △                      | +deposit(double)    |          +------------------+
+       |                      | +withdraw(double)   |          | +execute()       |
+  _____|_____                 | +getBalance():double|          | +rollback()      |
+ |           |                | +getStatement()     |          +------------------+
+Customer   Employee           +---------------------+
++--------+ +--------+                 △
+| -custId| | -empId |         ________|_________
+| -KYC   | | -role  |        |                  |
+| -tier  | | -dept  |  SavingsAccount    CurrentAccount
++--------+ +--------+  +-----------+    +------------+
+                        | -intRate  |    | -overdraft |
+                        | +calcInt()|    | -limit:dbl |
+                        +-----------+    +------------+
+
++-------------------+     +------------------+     +-----------------+
+|       Loan        |     |      Card        |     |   Branch        |
++-------------------+     +------------------+     +-----------------+
+| -loanId: String   |     | -cardNo: String  |     | -branchId: Str  |
+| -principal: double|     | -type: CardType  |     | -ifsc: String   |
+| -interestRate:dbl |     | -cvv: String     |     | -address: Str   |
+| -tenure: int      |     | -expiry: Date    |     | -manager: Emp   |
+| -emiAmount: double|     | -limit: double   |     +-----------------+
++-------------------+     +------------------+</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🔁 Sequence Diagram — Fund Transfer</h3>
+        <div class="diagram-box">
+Customer    BankApp    AccountSvc   TransactionSvc   DB
+   |           |            |              |           |
+   |--login()--|            |              |           |
+   |           |--verify()--|              |           |
+   |           |            |--authOK----> |           |
+   |--transfer(amt,toAcc)-> |              |           |
+   |           |            |--debit(from)-|           |
+   |           |            |              |--update-->|
+   |           |            |              |<--success-|
+   |           |            |--credit(to)->|           |
+   |           |            |              |--update-->|
+   |           |            |              |<--success-|
+   |           |            |<--txnId------|           |
+   |<--receipt-------------|              |           |
+   |           |            |              |           |
+   [ROLLBACK if credit fails: debit is reversed]</div>
+      </div>
+
+      <div class="card">
+        <h3>👤 Use Case Diagram</h3>
+        <div class="diagram-box">
+         ┌─────────────────────────────────────────┐
+         │           Banking System                │
+         │                                         │
+         │  (Login/Auth)    (View Balance)          │
+         │  (Fund Transfer) (Pay Bills)            │
+CUSTOMER─┤  (Apply Loan)   (Download Statement)   │
+         │  (Block Card)   (FD/RD Management)      │
+         │  (Update KYC)                           │
+         │                                         │
+MANAGER──┤  (Approve Loan) (View Reports)          │
+         │  (Manage Staff) (Audit Transactions)    │
+         │                                         │
+SYSTEM───┤  (Send Alerts)  (Calculate Interest)   │
+         │  (Generate OTP) (Fraud Detection)       │
+         └─────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ Activity Diagram — Loan Processing</h3>
+      <div class="diagram-box">
+[Start] → [Customer applies for loan]
+             ↓
+      [Collect Documents]
+             ↓
+      [KYC Verification] → [FAIL] → [Reject & Notify] → [End]
+             ↓ PASS
+      [Credit Score Check] → [Score < 650] → [Reject] → [End]
+             ↓ Score ≥ 650
+      [Risk Assessment]
+             ↓
+      [Calculate EMI & Terms]
+             ↓
+      [Manager Approval] → [Rejected] → [Notify Customer] → [End]
+             ↓ Approved
+      [Generate Loan Agreement]
+             ↓
+      [Customer Signs Agreement]
+             ↓
+      [Disburse Amount to Account]
+             ↓
+      [Setup EMI Schedule]
+             ↓
+[End] ← [Send Confirmation & Welcome Kit]</div>
+    </div>
+  </div>
+
+  <!-- SYSTEM DESIGN -->
+  <div id="banking-sysdesign" class="sec-content">
+    <div class="section-header">Banking — System Design & Architecture</div>
+    <div class="card">
+      <h3>🏗 Layered Architecture</h3>
+      <div class="layer-label">Client Layer</div>
+      <div class="arch-row">
+        <div class="arch-box highlight">Web App (React)</div>
+        <div class="arch-box highlight">Mobile App</div>
+        <div class="arch-box highlight">ATM Terminal</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ HTTPS / TLS</div>
+      <div class="layer-label">API Gateway Layer</div>
+      <div class="arch-row">
+        <div class="arch-box yellow">API Gateway</div>
+        <div class="arch-box yellow">Auth Service (OAuth2/JWT)</div>
+        <div class="arch-box yellow">Rate Limiter</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ REST / gRPC</div>
+      <div class="layer-label">Microservices Layer</div>
+      <div class="arch-row">
+        <div class="arch-box green">Account Service</div>
+        <div class="arch-box green">Transaction Service</div>
+        <div class="arch-box green">Loan Service</div>
+        <div class="arch-box green">Notification Service</div>
+        <div class="arch-box green">Fraud Detection</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ Message Queue (Kafka)</div>
+      <div class="layer-label">Data Layer</div>
+      <div class="arch-row">
+        <div class="arch-box purple">PostgreSQL (Primary)</div>
+        <div class="arch-box purple">Redis (Cache/Session)</div>
+        <div class="arch-box purple">Elasticsearch (Logs)</div>
+        <div class="arch-box purple">S3 (Documents)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔑 Key Design Decisions</h3>
+      <table>
+        <tr><th>Concern</th><th>Solution</th><th>Why</th></tr>
+        <tr><td>Consistency</td><td>ACID transactions + 2-phase commit</td><td>Money must never be lost</td></tr>
+        <tr><td>Scalability</td><td>Read replicas + CQRS pattern</td><td>Read-heavy workloads</td></tr>
+        <tr><td>Security</td><td>AES-256 encryption + HSM for keys</td><td>PCI-DSS compliance</td></tr>
+        <tr><td>High Availability</td><td>Active-Active across 2 DCs</td><td>99.99% SLA</td></tr>
+        <tr><td>Fraud Detection</td><td>ML model + rule engine via Kafka stream</td><td>Real-time detection</td></tr>
+        <tr><td>Idempotency</td><td>Idempotency keys on all transactions</td><td>Prevent duplicate transfers</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SQL -->
+  <div id="banking-sql" class="sec-content">
+    <div class="section-header">Banking — ER Diagram + SQL Schema + 20 Queries</div>
+
+    <div class="card">
+      <h3>📊 ER Diagram (Text)</h3>
+      <div class="diagram-box">
+CUSTOMER ──< ACCOUNT >── BRANCH
+    |              |
+    |              └──< TRANSACTION
+    |
+    └──< LOAN >── LOAN_PAYMENT
+    └──< CARD
+
+CUSTOMER: custId(PK), name, dob, email, phone, address, kycStatus, tier
+ACCOUNT:  accNo(PK), custId(FK), branchId(FK), type, balance, status, createdAt
+TRANSACTION: txnId(PK), fromAcc(FK), toAcc(FK), amount, type, status, timestamp
+BRANCH:   branchId(PK), name, ifsc, city, state, managerId
+LOAN:     loanId(PK), custId(FK), type, principal, rate, tenure, emiAmt, disbDate
+CARD:     cardId(PK), accNo(FK), type, cardNo, expiry, creditLimit, status
+LOAN_PAYMENT: payId(PK), loanId(FK), amount, paidOn, status</div>
+    </div>
+
+    <div class="card">
+      <h3>🗄 DDL — Create Tables</h3>
+<pre><span class="cm">-- ===== BANKING DATABASE SCHEMA =====</span>
+
+<span class="kw">CREATE TABLE</span> customer (
+  cust_id    <span class="dtype">VARCHAR</span>(20) <span class="kw">PRIMARY KEY</span>,
+  name       <span class="dtype">VARCHAR</span>(100) <span class="kw">NOT NULL</span>,
+  dob        <span class="dtype">DATE</span>,
+  email      <span class="dtype">VARCHAR</span>(100) <span class="kw">UNIQUE</span>,
+  phone      <span class="dtype">VARCHAR</span>(15),
+  address    <span class="dtype">TEXT</span>,
+  kyc_status <span class="dtype">VARCHAR</span>(20) <span class="kw">DEFAULT</span> <span class="st">'PENDING'</span>,
+  tier       <span class="dtype">VARCHAR</span>(10) <span class="kw">DEFAULT</span> <span class="st">'REGULAR'</span>,
+  created_at <span class="dtype">TIMESTAMP</span> <span class="kw">DEFAULT</span> <span class="fn">CURRENT_TIMESTAMP</span>
+);
+
+<span class="kw">CREATE TABLE</span> branch (
+  branch_id  <span class="dtype">VARCHAR</span>(10) <span class="kw">PRIMARY KEY</span>,
+  name       <span class="dtype">VARCHAR</span>(100),
+  ifsc       <span class="dtype">VARCHAR</span>(11) <span class="kw">UNIQUE</span>,
+  city       <span class="dtype">VARCHAR</span>(50),
+  state      <span class="dtype">VARCHAR</span>(50)
+);
+
+<span class="kw">CREATE TABLE</span> account (
+  acc_no      <span class="dtype">VARCHAR</span>(20) <span class="kw">PRIMARY KEY</span>,
+  cust_id     <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> customer(cust_id),
+  branch_id   <span class="dtype">VARCHAR</span>(10) <span class="kw">REFERENCES</span> branch(branch_id),
+  acc_type    <span class="dtype">VARCHAR</span>(20),  <span class="cm">-- SAVINGS, CURRENT, FD</span>
+  balance     <span class="dtype">DECIMAL</span>(15,2) <span class="kw">DEFAULT</span> <span class="nm">0.00</span>,
+  status      <span class="dtype">VARCHAR</span>(10) <span class="kw">DEFAULT</span> <span class="st">'ACTIVE'</span>,
+  created_at  <span class="dtype">TIMESTAMP</span> <span class="kw">DEFAULT</span> <span class="fn">CURRENT_TIMESTAMP</span>
+);
+
+<span class="kw">CREATE TABLE</span> transactions (
+  txn_id      <span class="dtype">VARCHAR</span>(30) <span class="kw">PRIMARY KEY</span>,
+  from_acc    <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> account(acc_no),
+  to_acc      <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> account(acc_no),
+  amount      <span class="dtype">DECIMAL</span>(15,2),
+  txn_type    <span class="dtype">VARCHAR</span>(20),  <span class="cm">-- CREDIT, DEBIT, TRANSFER</span>
+  status      <span class="dtype">VARCHAR</span>(10),
+  txn_date    <span class="dtype">TIMESTAMP</span> <span class="kw">DEFAULT</span> <span class="fn">CURRENT_TIMESTAMP</span>
+);
+
+<span class="kw">CREATE TABLE</span> loan (
+  loan_id     <span class="dtype">VARCHAR</span>(20) <span class="kw">PRIMARY KEY</span>,
+  cust_id     <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> customer(cust_id),
+  loan_type   <span class="dtype">VARCHAR</span>(20),
+  principal   <span class="dtype">DECIMAL</span>(15,2),
+  rate        <span class="dtype">DECIMAL</span>(5,2),
+  tenure_months <span class="dtype">INT</span>,
+  emi_amount  <span class="dtype">DECIMAL</span>(15,2),
+  status      <span class="dtype">VARCHAR</span>(20) <span class="kw">DEFAULT</span> <span class="st">'ACTIVE'</span>
+);
+
+<span class="kw">CREATE TABLE</span> card (
+  card_id     <span class="dtype">VARCHAR</span>(20) <span class="kw">PRIMARY KEY</span>,
+  acc_no      <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> account(acc_no),
+  card_type   <span class="dtype">VARCHAR</span>(10),
+  masked_no   <span class="dtype">VARCHAR</span>(20),
+  expiry      <span class="dtype">DATE</span>,
+  credit_limit <span class="dtype">DECIMAL</span>(15,2),
+  status      <span class="dtype">VARCHAR</span>(10) <span class="kw">DEFAULT</span> <span class="st">'ACTIVE'</span>
+);</pre>
+    </div>
+
+    <div class="card">
+      <h3>🔍 20 Essential SQL Queries — Banking</h3>
+
+<pre><span class="cm">-- Q1: Customer account summary with branch (INNER JOIN)</span>
+<span class="kw">SELECT</span> c.name, c.email, a.acc_no, a.acc_type, a.balance, b.name <span class="kw">AS</span> branch
+<span class="kw">FROM</span> customer c
+<span class="kw">JOIN</span> account a <span class="kw">ON</span> c.cust_id = a.cust_id
+<span class="kw">JOIN</span> branch b <span class="kw">ON</span> a.branch_id = b.branch_id
+<span class="kw">WHERE</span> a.status = <span class="st">'ACTIVE'</span>;
+
+<span class="cm">-- Q2: Total deposits & withdrawals per customer (GROUP BY + SUM)</span>
+<span class="kw">SELECT</span> a.cust_id, c.name,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> t.txn_type=<span class="st">'CREDIT'</span> <span class="kw">THEN</span> t.amount <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) credits,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> t.txn_type=<span class="st">'DEBIT'</span>  <span class="kw">THEN</span> t.amount <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) debits
+<span class="kw">FROM</span> transactions t
+<span class="kw">JOIN</span> account a <span class="kw">ON</span> t.from_acc = a.acc_no
+<span class="kw">JOIN</span> customer c <span class="kw">ON</span> a.cust_id = c.cust_id
+<span class="kw">GROUP BY</span> a.cust_id, c.name;
+
+<span class="cm">-- Q3: Top 5 high-value transactions (ORDER + LIMIT)</span>
+<span class="kw">SELECT</span> txn_id, from_acc, to_acc, amount, txn_date
+<span class="kw">FROM</span> transactions
+<span class="kw">ORDER BY</span> amount <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="nm">5</span>;
+
+<span class="cm">-- Q4: Running balance using WINDOW FUNCTION</span>
+<span class="kw">SELECT</span> txn_id, amount, txn_type, txn_date,
+  <span class="fn">SUM</span>(amount) <span class="kw">OVER</span> (
+    <span class="kw">PARTITION BY</span> from_acc
+    <span class="kw">ORDER BY</span> txn_date
+    <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
+  ) <span class="kw">AS</span> running_total
+<span class="kw">FROM</span> transactions;
+
+<span class="cm">-- Q5: Rank customers by balance (RANK window function)</span>
+<span class="kw">SELECT</span> c.name, a.balance,
+  <span class="fn">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> a.balance <span class="kw">DESC</span>) <span class="kw">AS</span> wealth_rank,
+  <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> a.balance <span class="kw">DESC</span>) <span class="kw">AS</span> dense_rank
+<span class="kw">FROM</span> account a <span class="kw">JOIN</span> customer c <span class="kw">ON</span> a.cust_id = c.cust_id;
+
+<span class="cm">-- Q6: Customers with NO active loans (LEFT JOIN + IS NULL / subquery)</span>
+<span class="kw">SELECT</span> c.cust_id, c.name
+<span class="kw">FROM</span> customer c
+<span class="kw">WHERE</span> c.cust_id <span class="kw">NOT IN</span> (
+  <span class="kw">SELECT DISTINCT</span> cust_id <span class="kw">FROM</span> loan <span class="kw">WHERE</span> status = <span class="st">'ACTIVE'</span>
+);
+
+<span class="cm">-- Q7: Monthly transaction volume (DATE_TRUNC + GROUP BY)</span>
+<span class="kw">SELECT</span>
+  <span class="fn">DATE_TRUNC</span>(<span class="st">'month'</span>, txn_date) <span class="kw">AS</span> month,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> txn_count,
+  <span class="fn">SUM</span>(amount) <span class="kw">AS</span> total_volume
+<span class="kw">FROM</span> transactions
+<span class="kw">GROUP BY</span> <span class="nm">1</span>
+<span class="kw">ORDER BY</span> <span class="nm">1</span>;
+
+<span class="cm">-- Q8: Find duplicate transactions (potential fraud) - SUBQUERY</span>
+<span class="kw">SELECT</span> from_acc, to_acc, amount, txn_date, <span class="fn">COUNT</span>(*)
+<span class="kw">FROM</span> transactions
+<span class="kw">GROUP BY</span> from_acc, to_acc, amount, txn_date
+<span class="kw">HAVING COUNT</span>(*) > <span class="nm">1</span>;
+
+<span class="cm">-- Q9: Average balance per branch (JOIN + AVG)</span>
+<span class="kw">SELECT</span> b.name, b.city, <span class="fn">AVG</span>(a.balance) <span class="kw">AS</span> avg_balance, <span class="fn">COUNT</span>(a.acc_no) <span class="kw">AS</span> total_accounts
+<span class="kw">FROM</span> branch b
+<span class="kw">JOIN</span> account a <span class="kw">ON</span> b.branch_id = a.branch_id
+<span class="kw">GROUP BY</span> b.name, b.city
+<span class="kw">ORDER BY</span> avg_balance <span class="kw">DESC</span>;
+
+<span class="cm">-- Q10: CTE — customers with balance above branch average</span>
+<span class="kw">WITH</span> branch_avg <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> branch_id, <span class="fn">AVG</span>(balance) <span class="kw">AS</span> avg_bal
+  <span class="kw">FROM</span> account <span class="kw">GROUP BY</span> branch_id
+)
+<span class="kw">SELECT</span> c.name, a.balance, ba.avg_bal
+<span class="kw">FROM</span> account a
+<span class="kw">JOIN</span> branch_avg ba <span class="kw">ON</span> a.branch_id = ba.branch_id
+<span class="kw">JOIN</span> customer c <span class="kw">ON</span> a.cust_id = c.cust_id
+<span class="kw">WHERE</span> a.balance > ba.avg_bal;
+
+<span class="cm">-- Q11: LAG/LEAD — compare transaction with previous (WINDOW)</span>
+<span class="kw">SELECT</span> txn_id, amount, txn_date,
+  <span class="fn">LAG</span>(amount) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> from_acc <span class="kw">ORDER BY</span> txn_date) <span class="kw">AS</span> prev_txn,
+  amount - <span class="fn">LAG</span>(amount) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> from_acc <span class="kw">ORDER BY</span> txn_date) <span class="kw">AS</span> diff
+<span class="kw">FROM</span> transactions;
+
+<span class="cm">-- Q12: Accounts with no transactions in 6 months (inactive)</span>
+<span class="kw">SELECT</span> acc_no, cust_id, balance
+<span class="kw">FROM</span> account
+<span class="kw">WHERE</span> acc_no <span class="kw">NOT IN</span> (
+  <span class="kw">SELECT DISTINCT</span> from_acc <span class="kw">FROM</span> transactions
+  <span class="kw">WHERE</span> txn_date >= <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'6 months'</span>
+);
+
+<span class="cm">-- Q13: Loan repayment status with customer info (3-table JOIN)</span>
+<span class="kw">SELECT</span> c.name, l.loan_id, l.principal, l.emi_amount,
+  <span class="fn">COUNT</span>(lp.pay_id) <span class="kw">AS</span> paid_emis
+<span class="kw">FROM</span> loan l
+<span class="kw">JOIN</span> customer c <span class="kw">ON</span> l.cust_id = c.cust_id
+<span class="kw">LEFT JOIN</span> loan_payment lp <span class="kw">ON</span> l.loan_id = lp.loan_id
+<span class="kw">GROUP BY</span> c.name, l.loan_id, l.principal, l.emi_amount;
+
+<span class="cm">-- Q14: NTILE — segment customers by balance quartile</span>
+<span class="kw">SELECT</span> c.name, a.balance,
+  <span class="fn">NTILE</span>(<span class="nm">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> a.balance) <span class="kw">AS</span> quartile
+<span class="kw">FROM</span> account a <span class="kw">JOIN</span> customer c <span class="kw">ON</span> a.cust_id = c.cust_id;
+
+<span class="cm">-- Q15: Self-join: accounts sending money to each other</span>
+<span class="kw">SELECT DISTINCT</span> t1.from_acc, t1.to_acc
+<span class="kw">FROM</span> transactions t1
+<span class="kw">JOIN</span> transactions t2 <span class="kw">ON</span> t1.from_acc = t2.to_acc
+  <span class="kw">AND</span> t1.to_acc = t2.from_acc;
+
+<span class="cm">-- Q16: UPDATE balance after transaction (DML)</span>
+<span class="kw">BEGIN</span>;
+  <span class="kw">UPDATE</span> account <span class="kw">SET</span> balance = balance - <span class="nm">5000</span>
+    <span class="kw">WHERE</span> acc_no = <span class="st">'ACC001'</span> <span class="kw">AND</span> balance >= <span class="nm">5000</span>;
+  <span class="kw">UPDATE</span> account <span class="kw">SET</span> balance = balance + <span class="nm">5000</span>
+    <span class="kw">WHERE</span> acc_no = <span class="st">'ACC002'</span>;
+<span class="kw">COMMIT</span>;
+
+<span class="cm">-- Q17: FIRST_VALUE / LAST_VALUE per account (window)</span>
+<span class="kw">SELECT</span> from_acc, amount, txn_date,
+  <span class="fn">FIRST_VALUE</span>(amount) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> from_acc <span class="kw">ORDER BY</span> txn_date) <span class="kw">AS</span> first_txn,
+  <span class="fn">LAST_VALUE</span>(amount)  <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> from_acc <span class="kw">ORDER BY</span> txn_date
+    <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</span>) <span class="kw">AS</span> last_txn
+<span class="kw">FROM</span> transactions;
+
+<span class="cm">-- Q18: Pivot-style: transaction counts by type per month</span>
+<span class="kw">SELECT</span>
+  <span class="fn">DATE_TRUNC</span>(<span class="st">'month'</span>, txn_date) <span class="kw">AS</span> month,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> txn_type=<span class="st">'CREDIT'</span>   <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) credits,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> txn_type=<span class="st">'DEBIT'</span>    <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) debits,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> txn_type=<span class="st">'TRANSFER'</span> <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) transfers
+<span class="kw">FROM</span> transactions <span class="kw">GROUP BY</span> <span class="nm">1</span>;
+
+<span class="cm">-- Q19: Correlated subquery — customers above average balance</span>
+<span class="kw">SELECT</span> c.name, a.balance
+<span class="kw">FROM</span> customer c <span class="kw">JOIN</span> account a <span class="kw">ON</span> c.cust_id = a.cust_id
+<span class="kw">WHERE</span> a.balance > (<span class="kw">SELECT AVG</span>(balance) <span class="kw">FROM</span> account);
+
+<span class="cm">-- Q20: FULL OUTER JOIN — all customers and their loan status</span>
+<span class="kw">SELECT</span> c.name, l.loan_id, l.loan_type, l.status
+<span class="kw">FROM</span> customer c
+<span class="kw">FULL OUTER JOIN</span> loan l <span class="kw">ON</span> c.cust_id = l.cust_id
+<span class="kw">ORDER BY</span> c.name;</pre>
+    </div>
+  </div>
+
+  <!-- JAVA OOP -->
+  <div id="banking-java" class="sec-content">
+    <div class="section-header">Banking — Java OOP + DSA Implementation</div>
+    <div class="card">
+      <h3>☕ Core OOP Implementation</h3>
+<pre><span class="cm">// ===== ABSTRACT BASE CLASS =====</span>
+<span class="kw">public abstract class</span> <span class="cl">Account</span> {
+    <span class="kw">protected</span> <span class="dtype">String</span> accountId;
+    <span class="kw">protected</span> <span class="dtype">double</span> balance;
+    <span class="kw">protected</span> <span class="cl">Customer</span> owner;
+    <span class="kw">protected</span> <span class="cl">List</span>&lt;<span class="cl">Transaction</span>&gt; history = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+
+    <span class="kw">public abstract</span> <span class="dtype">double</span> <span class="fn">calculateInterest</span>();
+
+    <span class="kw">public synchronized void</span> <span class="fn">deposit</span>(<span class="dtype">double</span> amount) {
+        <span class="kw">if</span> (amount &lt;= <span class="nm">0</span>) <span class="kw">throw new</span> <span class="cl">IllegalArgumentException</span>(<span class="st">"Amount must be positive"</span>);
+        <span class="kw">this</span>.balance += amount;
+        history.<span class="fn">add</span>(<span class="kw">new</span> <span class="cl">Transaction</span>(accountId, <span class="kw">null</span>, amount, <span class="st">"CREDIT"</span>));
+    }
+
+    <span class="kw">public synchronized boolean</span> <span class="fn">withdraw</span>(<span class="dtype">double</span> amount) {
+        <span class="kw">if</span> (amount > balance) <span class="kw">return false</span>;
+        <span class="kw">this</span>.balance -= amount;
+        history.<span class="fn">add</span>(<span class="kw">new</span> <span class="cl">Transaction</span>(<span class="kw">null</span>, accountId, amount, <span class="st">"DEBIT"</span>));
+        <span class="kw">return true</span>;
+    }
+}
+
+<span class="cm">// ===== SAVINGS ACCOUNT =====</span>
+<span class="kw">public class</span> <span class="cl">SavingsAccount</span> <span class="kw">extends</span> <span class="cl">Account</span> {
+    <span class="kw">private static final double</span> INTEREST_RATE = <span class="nm">0.04</span>;
+
+    <span class="kw">public</span> <span class="dtype">double</span> <span class="fn">calculateInterest</span>() {
+        <span class="kw">return</span> balance * INTEREST_RATE;
+    }
+}
+
+<span class="cm">// ===== BANK SERVICE (uses HashMap + PriorityQueue DSA) =====</span>
+<span class="kw">public class</span> <span class="cl">BankService</span> {
+    <span class="cm">// HashMap O(1) lookup by account number</span>
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">Account</span>&gt; accounts = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+    <span class="cm">// PriorityQueue for high-value transaction alerts</span>
+    <span class="kw">private</span> <span class="cl">PriorityQueue</span>&lt;<span class="cl">Transaction</span>&gt; alerts =
+        <span class="kw">new</span> <span class="cl">PriorityQueue</span>&lt;&gt;(<span class="cl">Comparator</span>.<span class="fn">comparingDouble</span>(<span class="cl">Transaction</span>::<span class="fn">getAmount</span>).<span class="fn">reversed</span>());
+
+    <span class="kw">public boolean</span> <span class="fn">transfer</span>(<span class="dtype">String</span> from, <span class="dtype">String</span> to, <span class="dtype">double</span> amount) {
+        <span class="cl">Account</span> src = accounts.<span class="fn">get</span>(from);
+        <span class="cl">Account</span> dst = accounts.<span class="fn">get</span>(to);
+        <span class="kw">if</span> (src == <span class="kw">null</span> || dst == <span class="kw">null</span>) <span class="kw">return false</span>;
+
+        <span class="cm">// Lock in consistent order to prevent deadlock</span>
+        <span class="cl">Object</span> lock1 = src.accountId.<span class="fn">compareTo</span>(dst.accountId) &lt; <span class="nm">0</span> ? src : dst;
+        <span class="cl">Object</span> lock2 = src.accountId.<span class="fn">compareTo</span>(dst.accountId) &lt; <span class="nm">0</span> ? dst : src;
+
+        <span class="kw">synchronized</span>(lock1) {
+            <span class="kw">synchronized</span>(lock2) {
+                <span class="kw">if</span> (!src.<span class="fn">withdraw</span>(amount)) <span class="kw">return false</span>;
+                dst.<span class="fn">deposit</span>(amount);
+                <span class="kw">if</span> (amount > <span class="nm">50000</span>) alerts.<span class="fn">offer</span>(<span class="kw">new</span> <span class="cl">Transaction</span>(from, to, amount, <span class="st">"TRANSFER"</span>));
+                <span class="kw">return true</span>;
+            }
+        }
+    }
+
+    <span class="cm">// DSA: Find top-K transactions using PriorityQueue O(n log k)</span>
+    <span class="kw">public</span> <span class="cl">List</span>&lt;<span class="cl">Transaction</span>&gt; <span class="fn">getTopKTransactions</span>(<span class="dtype">int</span> k) {
+        <span class="kw">return</span> <span class="cl">IntStream</span>.<span class="fn">range</span>(<span class="nm">0</span>, k)
+            .<span class="fn">filter</span>(i -> !alerts.<span class="fn">isEmpty</span>())
+            .<span class="fn">mapToObj</span>(i -> alerts.<span class="fn">poll</span>())
+            .<span class="fn">collect</span>(<span class="cl">Collectors</span>.<span class="fn">toList</span>());
+    }
+}
+
+<span class="cm">// ===== INTERFACE + DESIGN PATTERN =====</span>
+<span class="kw">public interface</span> <span class="cl">Notifiable</span> {
+    <span class="dtype">void</span> <span class="fn">sendAlert</span>(<span class="dtype">String</span> message);
+}
+<span class="cm">// Observer Pattern for fraud detection</span>
+<span class="kw">public class</span> <span class="cl">FraudDetectionService</span> <span class="kw">implements</span> <span class="cl">Notifiable</span> {
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">Deque</span>&lt;<span class="cl">Transaction</span>&gt;&gt; recentTxns = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+
+    <span class="kw">public boolean</span> <span class="fn">isSuspicious</span>(<span class="cl">Transaction</span> t) {
+        <span class="cl">Deque</span>&lt;<span class="cl">Transaction</span>&gt; recent = recentTxns
+            .<span class="fn">getOrDefault</span>(t.<span class="fn">getFromAcc</span>(), <span class="kw">new</span> <span class="cl">ArrayDeque</span>&lt;&gt;());
+        <span class="cm">// Sliding window: 3 large txns in 1 min = fraud</span>
+        <span class="kw">return</span> recent.<span class="fn">size</span>() >= <span class="nm">3</span> &&
+            recent.<span class="fn">stream</span>().<span class="fn">allMatch</span>(x -> x.<span class="fn">getAmount</span>() > <span class="nm">10000</span>);
+    }
+    <span class="kw">public void</span> <span class="fn">sendAlert</span>(<span class="dtype">String</span> message) {
+        <span class="cl">System</span>.out.<span class="fn">println</span>(<span class="st">"[FRAUD ALERT] "</span> + message);
+    }
+}</pre>
+    </div>
+  </div>
+</div>
+<!-- END BANKING -->
+
+<!-- ==================== ECOMMERCE ==================== -->
+<div id="app-ecommerce" class="app-content">
+  <div class="section-tabs">
+    <button class="sec-tab active" onclick="showSection('ecommerce','uml')">📐 UML Diagrams</button>
+    <button class="sec-tab" onclick="showSection('ecommerce','sysdesign')">🏗 System Design</button>
+    <button class="sec-tab" onclick="showSection('ecommerce','sql')">🗄 SQL + ER</button>
+    <button class="sec-tab" onclick="showSection('ecommerce','java')">☕ Java OOP + DSA</button>
+  </div>
+
+  <div id="ecommerce-uml" class="sec-content active">
+    <div class="section-header">E-Commerce — UML Diagrams</div>
+    <div class="card">
+      <h3>📦 Class Diagram</h3>
+      <div class="diagram-box">
++-----------+    +-----------+    +-------------+    +----------+
+|   User    |    |  Product  |    |   Order     |    | Payment  |
++-----------+    +-----------+    +-------------+    +----------+
+| -userId   |    | -prodId   |    | -orderId    |    | -payId   |
+| -name     |1──<| -name     |    | -userId(FK) |    | -orderId |
+| -email    |    | -price    |    | -items[]    |    | -amount  |
+| -address[]|    | -stock    |    | -total      |    | -method  |
+| -cart     |    | -category |    | -status     |    | -status  |
++-----------+    | -sellerId |    | -address    |    +----------+
+                 +-----------+    +-------------+
+                      |                |
+               +-----------+   +-------------+
+               |  Category |   |  OrderItem  |
+               +-----------+   +-------------+
+               | -catId    |   | -productId  |
+               | -name     |   | -qty        |
+               | -parent   |   | -price      |
+               +-----------+   +-------------+
+
++-----------+    +-----------+    +-------------+
+|  Seller   |    |  Review   |    |   Coupon    |
++-----------+    +-----------+    +-------------+
+| -sellerId |    | -reviewId |    | -code       |
+| -shopName |    | -userId   |    | -discount%  |
+| -rating   |    | -prodId   |    | -minOrder   |
+| -products |    | -rating   |    | -expiry     |
++-----------+    | -comment  |    +-------------+
+                 +-----------+</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🔁 Sequence — Place Order</h3>
+        <div class="diagram-box">
+User  CartSvc  OrderSvc  InventorySvc  PaymentGW  DB
+ |      |         |           |            |        |
+ |--addToCart()-> |           |            |        |
+ |      |--checkStock()-----> |            |        |
+ |      |<--------ok----------|            |        |
+ |--placeOrder()-->           |            |        |
+ |      |         |--reserve()-----------> |        |
+ |      |         |--createOrder()---------|------->|
+ |      |         |--initiatePayment()---> |        |
+ |      |         |         |<--success---|        |
+ |      |         |--confirmOrder()--------|------->|
+ |<-----orderConfirmation----|            |        |</div>
+      </div>
+      <div class="card">
+        <h3>👤 Use Case</h3>
+        <div class="diagram-box">
+        ┌───────────────────────────────┐
+        │       E-Commerce System       │
+        │                               │
+        │ (Browse Products)             │
+BUYER──┤ (Search/Filter)               │
+        │ (Add to Cart) (Checkout)      │
+        │ (Track Order)(Return/Refund)  │
+        │ (Write Review)(Apply Coupon)  │
+        │                               │
+SELLER─┤ (List Products)(Set Price)    │
+        │ (Manage Inventory)(Ship)      │
+        │                               │
+ADMIN──┤ (Approve Seller)(Analytics)   │
+        │ (Manage Disputes)             │
+        └───────────────────────────────┘</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ecommerce-sysdesign" class="sec-content">
+    <div class="section-header">E-Commerce — System Design</div>
+    <div class="card">
+      <h3>🏗 Architecture</h3>
+      <div class="layer-label">Client</div>
+      <div class="arch-row">
+        <div class="arch-box highlight">Web (React)</div>
+        <div class="arch-box highlight">Mobile App</div>
+        <div class="arch-box highlight">Seller Portal</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ CDN (CloudFront) → Load Balancer</div>
+      <div class="layer-label">Services</div>
+      <div class="arch-row">
+        <div class="arch-box green">Product Service</div>
+        <div class="arch-box green">Order Service</div>
+        <div class="arch-box green">Cart Service</div>
+        <div class="arch-box green">Search Service</div>
+        <div class="arch-box green">Payment Service</div>
+        <div class="arch-box green">Notification</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ Kafka (events: order_placed, payment_done)</div>
+      <div class="layer-label">Storage</div>
+      <div class="arch-row">
+        <div class="arch-box purple">MySQL (Orders)</div>
+        <div class="arch-box purple">MongoDB (Products)</div>
+        <div class="arch-box purple">Redis (Cart/Session)</div>
+        <div class="arch-box purple">Elasticsearch (Search)</div>
+        <div class="arch-box purple">S3 (Images)</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>⚡ Key Design Decisions</h3>
+      <table>
+        <tr><th>Problem</th><th>Solution</th></tr>
+        <tr><td>Product Search</td><td>Elasticsearch with inverted index, filters, facets</td></tr>
+        <tr><td>Flash Sale (high concurrency)</td><td>Redis atomic DECR + Lua script for inventory</td></tr>
+        <tr><td>Recommendation Engine</td><td>Collaborative filtering + Kafka clickstream</td></tr>
+        <tr><td>Image loading speed</td><td>CDN + lazy loading + WebP format</td></tr>
+        <tr><td>Cart persistence</td><td>Redis (logged in) + localStorage (guest)</td></tr>
+        <tr><td>Payment reliability</td><td>Saga pattern + idempotent retries</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="ecommerce-sql" class="sec-content">
+    <div class="section-header">E-Commerce — ER Diagram + SQL</div>
+    <div class="card">
+      <h3>📊 ER Diagram</h3>
+      <div class="diagram-box">
+USER ──< ORDER ──< ORDER_ITEM >── PRODUCT >── CATEGORY
+  |         |                        |
+  |    PAYMENT                    REVIEW
+  |
+ CART ──< CART_ITEM
+
+USER: userId, name, email, phone, createdAt
+PRODUCT: prodId, name, description, price, stock, categoryId, sellerId
+ORDER: orderId, userId, totalAmount, status, createdAt, deliveryAddr
+ORDER_ITEM: itemId, orderId, prodId, qty, priceAtOrder
+PAYMENT: payId, orderId, amount, method, status, paidAt
+CATEGORY: catId, name, parentCatId (self-join for hierarchy)
+REVIEW: reviewId, userId, prodId, rating, comment, createdAt
+COUPON: couponId, code, discountType, discountValue, minOrderAmt, expiresAt</div>
+    </div>
+    <div class="card">
+      <h3>🗄 DDL Schema</h3>
+<pre><span class="kw">CREATE TABLE</span> users (
+  user_id    <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  name       <span class="dtype">VARCHAR</span>(100),
+  email      <span class="dtype">VARCHAR</span>(100) <span class="kw">UNIQUE NOT NULL</span>,
+  phone      <span class="dtype">VARCHAR</span>(15),
+  created_at <span class="dtype">DATETIME</span> <span class="kw">DEFAULT</span> <span class="fn">NOW</span>()
+);
+
+<span class="kw">CREATE TABLE</span> category (
+  cat_id     <span class="dtype">INT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  name       <span class="dtype">VARCHAR</span>(100),
+  parent_id  <span class="dtype">INT</span> <span class="kw">REFERENCES</span> category(cat_id)  <span class="cm">-- self join</span>
+);
+
+<span class="kw">CREATE TABLE</span> product (
+  prod_id    <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  name       <span class="dtype">VARCHAR</span>(200),
+  price      <span class="dtype">DECIMAL</span>(10,2),
+  stock      <span class="dtype">INT</span> <span class="kw">DEFAULT</span> <span class="nm">0</span>,
+  cat_id     <span class="dtype">INT</span> <span class="kw">REFERENCES</span> category(cat_id),
+  seller_id  <span class="dtype">BIGINT</span>,
+  rating     <span class="dtype">DECIMAL</span>(3,2) <span class="kw">DEFAULT</span> <span class="nm">0</span>
+);
+
+<span class="kw">CREATE TABLE</span> orders (
+  order_id   <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  user_id    <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> users(user_id),
+  total_amt  <span class="dtype">DECIMAL</span>(10,2),
+  status     <span class="dtype">VARCHAR</span>(20) <span class="kw">DEFAULT</span> <span class="st">'PLACED'</span>,
+  created_at <span class="dtype">DATETIME</span> <span class="kw">DEFAULT</span> <span class="fn">NOW</span>()
+);
+
+<span class="kw">CREATE TABLE</span> order_item (
+  item_id    <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  order_id   <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> orders(order_id),
+  prod_id    <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> product(prod_id),
+  qty        <span class="dtype">INT</span>,
+  price_snapshot <span class="dtype">DECIMAL</span>(10,2)
+);
+
+<span class="kw">CREATE TABLE</span> review (
+  review_id  <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  user_id    <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> users(user_id),
+  prod_id    <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> product(prod_id),
+  rating     <span class="dtype">TINYINT</span> <span class="kw">CHECK</span>(rating <span class="kw">BETWEEN</span> <span class="nm">1</span> <span class="kw">AND</span> <span class="nm">5</span>),
+  comment    <span class="dtype">TEXT</span>
+);</pre>
+    </div>
+
+    <div class="card">
+      <h3>🔍 20 SQL Queries — E-Commerce</h3>
+<pre><span class="cm">-- Q1: Top 10 best-selling products (JOIN + GROUP BY)</span>
+<span class="kw">SELECT</span> p.name, <span class="fn">SUM</span>(oi.qty) <span class="kw">AS</span> total_sold, <span class="fn">SUM</span>(oi.qty * oi.price_snapshot) revenue
+<span class="kw">FROM</span> order_item oi <span class="kw">JOIN</span> product p <span class="kw">ON</span> oi.prod_id = p.prod_id
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> oi.order_id = o.order_id <span class="kw">WHERE</span> o.status = <span class="st">'DELIVERED'</span>
+<span class="kw">GROUP BY</span> p.prod_id, p.name <span class="kw">ORDER BY</span> total_sold <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q2: Revenue per category (recursive category using CTE)</span>
+<span class="kw">WITH RECURSIVE</span> cat_tree <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> cat_id, name, parent_id <span class="kw">FROM</span> category <span class="kw">WHERE</span> parent_id <span class="kw">IS NULL</span>
+  <span class="kw">UNION ALL</span>
+  <span class="kw">SELECT</span> c.cat_id, c.name, c.parent_id <span class="kw">FROM</span> category c
+  <span class="kw">JOIN</span> cat_tree ct <span class="kw">ON</span> c.parent_id = ct.cat_id
+)
+<span class="kw">SELECT</span> ct.name, <span class="fn">SUM</span>(oi.qty * oi.price_snapshot) revenue
+<span class="kw">FROM</span> cat_tree ct <span class="kw">JOIN</span> product p <span class="kw">ON</span> ct.cat_id = p.cat_id
+<span class="kw">JOIN</span> order_item oi <span class="kw">ON</span> p.prod_id = oi.prod_id <span class="kw">GROUP BY</span> ct.name;
+
+<span class="cm">-- Q3: Customers who never placed an order (LEFT JOIN)</span>
+<span class="kw">SELECT</span> u.user_id, u.name, u.email
+<span class="kw">FROM</span> users u <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.user_id = o.user_id
+<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;
+
+<span class="cm">-- Q4: Average order value per user with rank (WINDOW)</span>
+<span class="kw">SELECT</span> u.name, <span class="fn">AVG</span>(o.total_amt) avg_order,
+  <span class="fn">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fn">AVG</span>(o.total_amt) <span class="kw">DESC</span>) AS rnk
+<span class="kw">FROM</span> users u <span class="kw">JOIN</span> orders o <span class="kw">ON</span> u.user_id = o.user_id
+<span class="kw">GROUP BY</span> u.user_id, u.name;
+
+<span class="cm">-- Q5: Products with low stock (alert query)</span>
+<span class="kw">SELECT</span> prod_id, name, stock
+<span class="kw">FROM</span> product <span class="kw">WHERE</span> stock &lt; <span class="nm">10</span> <span class="kw">ORDER BY</span> stock <span class="kw">ASC</span>;
+
+<span class="cm">-- Q6: Monthly revenue trend (DATE FORMAT)</span>
+<span class="kw">SELECT</span> <span class="fn">DATE_FORMAT</span>(created_at, <span class="st">'%Y-%m'</span>) month,
+  <span class="fn">COUNT</span>(*) orders, <span class="fn">SUM</span>(total_amt) revenue
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> status != <span class="st">'CANCELLED'</span>
+<span class="kw">GROUP BY</span> <span class="nm">1</span> <span class="kw">ORDER BY</span> <span class="nm">1</span>;
+
+<span class="cm">-- Q7: Products bought together (self-join on order_item)</span>
+<span class="kw">SELECT</span> a.prod_id, b.prod_id, <span class="fn">COUNT</span>(*) frequency
+<span class="kw">FROM</span> order_item a <span class="kw">JOIN</span> order_item b
+  <span class="kw">ON</span> a.order_id = b.order_id <span class="kw">AND</span> a.prod_id &lt; b.prod_id
+<span class="kw">GROUP BY</span> a.prod_id, b.prod_id
+<span class="kw">ORDER BY</span> frequency <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q8: Average rating with review count per product</span>
+<span class="kw">SELECT</span> p.name, <span class="fn">AVG</span>(r.rating) avg_rating, <span class="fn">COUNT</span>(r.review_id) review_count
+<span class="kw">FROM</span> product p <span class="kw">LEFT JOIN</span> review r <span class="kw">ON</span> p.prod_id = r.prod_id
+<span class="kw">GROUP BY</span> p.prod_id, p.name
+<span class="kw">HAVING</span> review_count > <span class="nm">5</span>
+<span class="kw">ORDER BY</span> avg_rating <span class="kw">DESC</span>;
+
+<span class="cm">-- Q9: ROW_NUMBER to get latest order per customer</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> u.name, o.order_id, o.total_amt, o.created_at,
+    <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> o.user_id <span class="kw">ORDER BY</span> o.created_at <span class="kw">DESC</span>) rn
+  <span class="kw">FROM</span> orders o <span class="kw">JOIN</span> users u <span class="kw">ON</span> o.user_id = u.user_id
+) t <span class="kw">WHERE</span> rn = <span class="nm">1</span>;
+
+<span class="cm">-- Q10: Repeat buyers (more than 3 orders in 30 days)</span>
+<span class="kw">SELECT</span> user_id, <span class="fn">COUNT</span>(*) order_count
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> created_at >= <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="nm">30</span> <span class="kw">DAY</span>
+<span class="kw">GROUP BY</span> user_id <span class="kw">HAVING</span> order_count > <span class="nm">3</span>;
+
+<span class="cm">-- Q11: Cumulative revenue (running total window)</span>
+<span class="kw">SELECT</span> <span class="fn">DATE</span>(created_at), <span class="fn">SUM</span>(total_amt),
+  <span class="fn">SUM</span>(<span class="fn">SUM</span>(total_amt)) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fn">DATE</span>(created_at)) cumulative
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> <span class="fn">DATE</span>(created_at);
+
+<span class="cm">-- Q12: CROSS JOIN to generate price comparison matrix</span>
+<span class="kw">SELECT</span> a.name, a.price, b.name competitor, b.price
+<span class="kw">FROM</span> product a <span class="kw">CROSS JOIN</span> product b
+<span class="kw">WHERE</span> a.cat_id = b.cat_id <span class="kw">AND</span> a.prod_id != b.prod_id;
+
+<span class="cm">-- Q13: Subquery — products above avg price in category</span>
+<span class="kw">SELECT</span> name, price, cat_id
+<span class="kw">FROM</span> product p
+<span class="kw">WHERE</span> price > (<span class="kw">SELECT AVG</span>(price) <span class="kw">FROM</span> product <span class="kw">WHERE</span> cat_id = p.cat_id);
+
+<span class="cm">-- Q14: LEAD — next order date per customer</span>
+<span class="kw">SELECT</span> user_id, order_id, created_at,
+  <span class="fn">LEAD</span>(created_at) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> user_id <span class="kw">ORDER BY</span> created_at) next_order
+<span class="kw">FROM</span> orders;
+
+<span class="cm">-- Q15: Abandoned carts (in cart but no order)</span>
+<span class="kw">SELECT</span> u.name, u.email, <span class="fn">COUNT</span>(ci.item_id) items_in_cart
+<span class="kw">FROM</span> users u <span class="kw">JOIN</span> cart c <span class="kw">ON</span> u.user_id = c.user_id
+<span class="kw">JOIN</span> cart_item ci <span class="kw">ON</span> c.cart_id = ci.cart_id
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.user_id = o.user_id
+  <span class="kw">AND</span> <span class="fn">DATE</span>(o.created_at) = <span class="fn">CURDATE</span>()
+<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL GROUP BY</span> u.user_id, u.name, u.email;
+
+<span class="cm">-- Q16-20: Quick queries</span>
+<span class="cm">-- Q16: UPSERT cart item</span>
+<span class="kw">INSERT INTO</span> cart_item(cart_id, prod_id, qty) <span class="kw">VALUES</span>(<span class="nm">1</span>,<span class="nm">101</span>,<span class="nm">2</span>)
+  <span class="kw">ON DUPLICATE KEY UPDATE</span> qty = qty + <span class="nm">2</span>;
+
+<span class="cm">-- Q17: Decrease stock on order</span>
+<span class="kw">UPDATE</span> product <span class="kw">SET</span> stock = stock - <span class="nm">1</span>
+<span class="kw">WHERE</span> prod_id = <span class="nm">101</span> <span class="kw">AND</span> stock > <span class="nm">0</span>;
+
+<span class="cm">-- Q18: Coupon validation</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> coupon
+<span class="kw">WHERE</span> code = <span class="st">'SAVE20'</span> <span class="kw">AND</span> expires_at > <span class="fn">NOW</span>()
+  <span class="kw">AND</span> min_order_amt &lt;= <span class="nm">500</span>;
+
+<span class="cm">-- Q19: Order status breakdown</span>
+<span class="kw">SELECT</span> status, <span class="fn">COUNT</span>(*) cnt, <span class="fn">SUM</span>(total_amt) revenue
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> status;
+
+<span class="cm">-- Q20: Full text search on products</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> product
+<span class="kw">WHERE MATCH</span>(name, description) <span class="kw">AGAINST</span>(<span class="st">'wireless headphones'</span> <span class="kw">IN BOOLEAN MODE</span>);</pre>
+    </div>
+  </div>
+
+  <div id="ecommerce-java" class="sec-content">
+    <div class="section-header">E-Commerce — Java OOP + DSA</div>
+    <div class="card">
+      <h3>☕ Core Implementation</h3>
+<pre><span class="cm">// ===== PRODUCT (Comparable for sorting) =====</span>
+<span class="kw">public class</span> <span class="cl">Product</span> <span class="kw">implements</span> <span class="cl">Comparable</span>&lt;<span class="cl">Product</span>&gt; {
+    <span class="kw">private</span> <span class="dtype">long</span> productId;
+    <span class="kw">private</span> <span class="dtype">String</span> name;
+    <span class="kw">private</span> <span class="dtype">double</span> price;
+    <span class="kw">private</span> <span class="dtype">int</span> stock;
+    <span class="kw">private</span> <span class="dtype">double</span> rating;
+
+    <span class="kw">public int</span> <span class="fn">compareTo</span>(<span class="cl">Product</span> other) {
+        <span class="kw">return</span> <span class="cl">Double</span>.<span class="fn">compare</span>(other.rating, <span class="kw">this</span>.rating); <span class="cm">// desc</span>
+    }
+}
+
+<span class="cm">// ===== CART (uses LinkedHashMap for insertion order) =====</span>
+<span class="kw">public class</span> <span class="cl">ShoppingCart</span> {
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="cl">Product</span>, <span class="dtype">Integer</span>&gt; items = <span class="kw">new</span> <span class="cl">LinkedHashMap</span>&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">addItem</span>(<span class="cl">Product</span> p, <span class="dtype">int</span> qty) {
+        items.<span class="fn">merge</span>(p, qty, <span class="cl">Integer</span>::<span class="fn">sum</span>);
+    }
+    <span class="kw">public void</span> <span class="fn">removeItem</span>(<span class="cl">Product</span> p) { items.<span class="fn">remove</span>(p); }
+    <span class="kw">public double</span> <span class="fn">getTotal</span>() {
+        <span class="kw">return</span> items.<span class="fn">entrySet</span>().<span class="fn">stream</span>()
+            .<span class="fn">mapToDouble</span>(e -> e.<span class="fn">getKey</span>().<span class="fn">getPrice</span>() * e.<span class="fn">getValue</span>())
+            .<span class="fn">sum</span>();
+    }
+}
+
+<span class="cm">// ===== PRODUCT SEARCH (Trie for autocomplete DSA) =====</span>
+<span class="kw">class</span> <span class="cl">TrieNode</span> {
+    <span class="cl">Map</span>&lt;<span class="cl">Character</span>, <span class="cl">TrieNode</span>&gt; children = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+    <span class="dtype">boolean</span> isEnd;
+    <span class="cl">List</span>&lt;<span class="dtype">String</span>&gt; suggestions = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+}
+<span class="kw">public class</span> <span class="cl">ProductSearch</span> {
+    <span class="kw">private</span> <span class="cl">TrieNode</span> root = <span class="kw">new</span> <span class="cl">TrieNode</span>();
+
+    <span class="kw">public void</span> <span class="fn">insert</span>(<span class="dtype">String</span> product) {
+        <span class="cl">TrieNode</span> node = root;
+        <span class="kw">for</span> (<span class="dtype">char</span> c : product.<span class="fn">toCharArray</span>()) {
+            node = node.children.<span class="fn">computeIfAbsent</span>(c, k -> <span class="kw">new</span> <span class="cl">TrieNode</span>());
+            node.suggestions.<span class="fn">add</span>(product);
+        }
+        node.isEnd = <span class="kw">true</span>;
+    }
+
+    <span class="kw">public</span> <span class="cl">List</span>&lt;<span class="dtype">String</span>&gt; <span class="fn">autocomplete</span>(<span class="dtype">String</span> prefix) {
+        <span class="cl">TrieNode</span> node = root;
+        <span class="kw">for</span> (<span class="dtype">char</span> c : prefix.<span class="fn">toCharArray</span>()) {
+            <span class="kw">if</span> (!node.children.<span class="fn">containsKey</span>(c)) <span class="kw">return new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+            node = node.children.<span class="fn">get</span>(c);
+        }
+        <span class="kw">return</span> node.suggestions;
+    }
+}
+
+<span class="cm">// ===== ORDER PROCESSING (Strategy Pattern) =====</span>
+<span class="kw">public interface</span> <span class="cl">PaymentStrategy</span> {
+    <span class="dtype">boolean</span> <span class="fn">pay</span>(<span class="dtype">double</span> amount);
+}
+<span class="kw">public class</span> <span class="cl">CreditCardPayment</span> <span class="kw">implements</span> <span class="cl">PaymentStrategy</span> {
+    <span class="kw">public boolean</span> <span class="fn">pay</span>(<span class="dtype">double</span> amount) { <span class="kw">return true</span>; } <span class="cm">// call gateway</span>
+}
+<span class="kw">public class</span> <span class="cl">OrderService</span> {
+    <span class="kw">private</span> <span class="cl">PaymentStrategy</span> paymentStrategy;
+    <span class="kw">public void</span> <span class="fn">setPaymentStrategy</span>(<span class="cl">PaymentStrategy</span> s) { <span class="kw">this</span>.paymentStrategy = s; }
+    <span class="kw">public</span> <span class="cl">Order</span> <span class="fn">placeOrder</span>(<span class="cl">ShoppingCart</span> cart, <span class="cl">User</span> user) {
+        <span class="dtype">double</span> total = cart.<span class="fn">getTotal</span>();
+        <span class="kw">if</span> (!paymentStrategy.<span class="fn">pay</span>(total)) <span class="kw">throw new</span> <span class="cl">PaymentFailedException</span>();
+        <span class="kw">return new</span> <span class="cl">Order</span>(user, cart.<span class="fn">getItems</span>(), total);
+    }
+}</pre>
+    </div>
+  </div>
+</div>
+<!-- END ECOMMERCE -->
+
+<!-- ==================== STREAMING ==================== -->
+<div id="app-streaming" class="app-content">
+  <div class="section-tabs">
+    <button class="sec-tab active" onclick="showSection('streaming','uml')">📐 UML Diagrams</button>
+    <button class="sec-tab" onclick="showSection('streaming','sysdesign')">🏗 System Design</button>
+    <button class="sec-tab" onclick="showSection('streaming','sql')">🗄 SQL + ER</button>
+    <button class="sec-tab" onclick="showSection('streaming','java')">☕ Java OOP + DSA</button>
+  </div>
+
+  <div id="streaming-uml" class="sec-content active">
+    <div class="section-header">YouTube-like Streaming — UML Diagrams</div>
+    <div class="card">
+      <h3>📦 Class Diagram</h3>
+      <div class="diagram-box">
++----------+    +-----------+    +----------+    +----------+
+|   User   |    |  Channel  |    |  Video   |    | Comment  |
++----------+    +-----------+    +----------+    +----------+
+| -userId  |1──<| -chanId   |1──<| -videoId |    | -commId  |
+| -username|    | -name     |    | -title   |<───| -userId  |
+| -email   |    | -subscribers|  | -url     |    | -videoId |
+| -subs[]  |    | -ownerId  |    | -views   |    | -text    |
++----------+    +-----------+    | -likes   |    | -likes   |
+                                 | -duration|    | -replies |
++----------+    +-----------+    | -status  |    +----------+
+| Playlist |    |  Like     |    +----------+
++----------+    +-----------+
+| -playId  |    | -userId   |    +----------+
+| -userId  |    | -videoId  |    | Subtitle |
+| -videos[]|    | -type     |    +----------+
++----------+    +-----------+    | -videoId |
+                                 | -lang    |
+                                 | -content |
+                                 +----------+</div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>🔁 Sequence — Video Upload</h3>
+        <div class="diagram-box">
+Creator  WebApp  UploadSvc  TranscoderSvc  StorageSvc  DB
+   |       |        |            |             |        |
+   |--selectFile--> |            |             |        |
+   |       |--upload(raw)------> |             |        |
+   |       |        |--save(raw)-------------> |        |
+   |       |        |<---rawKey---------------|        |
+   |       |        |--transcode(rawKey)-----> |        |
+   |       |        |   [Process 360/720/1080p]         |
+   |       |        |<---outputURLs-----------|        |
+   |       |        |--createVideo()------------------------->|
+   |       |        |--generateThumbnail()    |        |      |
+   |<------uploadComplete---------            |        |</div>
+      </div>
+      <div class="card">
+        <h3>👤 Use Case Diagram</h3>
+        <div class="diagram-box">
+        ┌──────────────────────────────────┐
+        │      Streaming Platform          │
+        │                                  │
+        │ (Search Videos)(Watch Video)     │
+VIEWER─┤ (Like/Dislike)(Comment)          │
+        │ (Subscribe)(Create Playlist)     │
+        │ (Share)(Report)                  │
+        │                                  │
+CREATOR┤ (Upload Video)(Edit Metadata)    │
+        │ (View Analytics)(Monetize)       │
+        │ (Manage Community)               │
+        │                                  │
+ADMIN──┤ (Moderate Content)(Ban Users)    │
+        │ (Manage Ads)(Platform Settings)  │
+        └──────────────────────────────────┘</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="streaming-sysdesign" class="sec-content">
+    <div class="section-header">Streaming — System Design</div>
+    <div class="card">
+      <h3>🏗 Architecture</h3>
+      <div class="arch-row">
+        <div class="arch-box highlight">Web Client</div>
+        <div class="arch-box highlight">Mobile</div>
+        <div class="arch-box highlight">Smart TV</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ CDN Edge Nodes (CloudFront/Akamai)</div>
+      <div class="arch-row">
+        <div class="arch-box yellow">API Gateway</div>
+        <div class="arch-box yellow">Auth Service</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓</div>
+      <div class="arch-row">
+        <div class="arch-box green">Video Upload Service</div>
+        <div class="arch-box green">Transcoding Service</div>
+        <div class="arch-box green">Streaming Service (HLS/DASH)</div>
+        <div class="arch-box green">Recommendation Engine</div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box red">Search (Elasticsearch)</div>
+        <div class="arch-box red">Analytics (Kafka + Spark)</div>
+        <div class="arch-box red">Notification Service</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓</div>
+      <div class="arch-row">
+        <div class="arch-box purple">MySQL (Metadata)</div>
+        <div class="arch-box purple">Redis (Views/Cache)</div>
+        <div class="arch-box purple">S3 (Video Files)</div>
+        <div class="arch-box purple">Cassandra (Comments)</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📡 Video Streaming Flow</h3>
+      <table>
+        <tr><th>Step</th><th>Technology</th><th>Detail</th></tr>
+        <tr><td>Upload</td><td>Chunked upload (5MB parts)</td><td>Resume on failure, S3 multipart</td></tr>
+        <tr><td>Transcode</td><td>FFmpeg workers (queue)</td><td>360p/480p/720p/1080p/4K</td></tr>
+        <tr><td>Format</td><td>HLS (.m3u8 + .ts)</td><td>Adaptive bitrate streaming</td></tr>
+        <tr><td>Delivery</td><td>CDN with edge caching</td><td>Nearest PoP serves chunks</td></tr>
+        <tr><td>DRM</td><td>Widevine/FairPlay</td><td>Premium content protection</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="streaming-sql" class="sec-content">
+    <div class="section-header">Streaming — ER + SQL</div>
+    <div class="card">
+      <h3>📊 ER Diagram</h3>
+      <div class="diagram-box">
+USER ──< SUBSCRIPTION (to Channel) >── CHANNEL ──< VIDEO
+  |                                                    |
+  └──< WATCH_HISTORY >── VIDEO                    COMMENT
+  └──< LIKE >── VIDEO                             LIKE
+  └──< PLAYLIST ──< PLAYLIST_VIDEO >── VIDEO
+
+USER: userId, username, email, createdAt, planType
+CHANNEL: chanId, name, description, ownerId, subscriberCount
+VIDEO: videoId, chanId, title, description, url, duration, views, status, uploadedAt
+WATCH_HISTORY: histId, userId, videoId, watchedAt, progressSeconds
+COMMENT: commId, videoId, userId, text, likes, parentCommId
+LIKE: userId, videoId, type (LIKE/DISLIKE)</div>
+    </div>
+    <div class="card">
+      <h3>🔍 20 SQL Queries — Streaming</h3>
+<pre><span class="cm">-- Q1: Trending videos (views in last 24h)</span>
+<span class="kw">SELECT</span> v.title, v.views, <span class="fn">COUNT</span>(wh.hist_id) recent_views
+<span class="kw">FROM</span> video v <span class="kw">JOIN</span> watch_history wh <span class="kw">ON</span> v.video_id = wh.video_id
+<span class="kw">WHERE</span> wh.watched_at > <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'1 day'</span>
+<span class="kw">GROUP BY</span> v.video_id, v.title, v.views
+<span class="kw">ORDER BY</span> recent_views <span class="kw">DESC LIMIT</span> <span class="nm">20</span>;
+
+<span class="cm">-- Q2: Channel analytics - views per video (WINDOW + RATIO)</span>
+<span class="kw">SELECT</span> title, views,
+  <span class="fn">SUM</span>(views) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> chan_id) chan_total,
+  <span class="nm">100.0</span> * views / <span class="fn">SUM</span>(views) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> chan_id) pct_share
+<span class="kw">FROM</span> video <span class="kw">WHERE</span> status = <span class="st">'PUBLISHED'</span>;
+
+<span class="cm">-- Q3: User watch time per day</span>
+<span class="kw">SELECT</span> user_id, <span class="fn">DATE</span>(watched_at),
+  <span class="fn">SUM</span>(progress_seconds) <span class="kw">AS</span> total_watch_sec
+<span class="kw">FROM</span> watch_history
+<span class="kw">GROUP BY</span> user_id, <span class="fn">DATE</span>(watched_at);
+
+<span class="cm">-- Q4: Recommended videos (not yet watched by user)</span>
+<span class="kw">SELECT</span> v.title, v.views
+<span class="kw">FROM</span> video v
+<span class="kw">WHERE</span> v.video_id <span class="kw">NOT IN</span> (
+  <span class="kw">SELECT</span> video_id <span class="kw">FROM</span> watch_history <span class="kw">WHERE</span> user_id = <span class="nm">123</span>
+) <span class="kw">ORDER BY</span> v.views <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q5: Like ratio per video</span>
+<span class="kw">SELECT</span> v.title,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> l.type=<span class="st">'LIKE'</span>    <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) likes,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> l.type=<span class="st">'DISLIKE'</span> <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) dislikes
+<span class="kw">FROM</span> video v <span class="kw">LEFT JOIN</span> likes l <span class="kw">ON</span> v.video_id = l.video_id
+<span class="kw">GROUP BY</span> v.video_id, v.title;
+
+<span class="cm">-- Q6: Subscriber growth per channel (monthly)</span>
+<span class="kw">SELECT</span> chan_id, <span class="fn">DATE_TRUNC</span>(<span class="st">'month'</span>, subbed_at) month,
+  <span class="fn">COUNT</span>(*) new_subs,
+  <span class="fn">SUM</span>(<span class="fn">COUNT</span>(*)) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> chan_id <span class="kw">ORDER BY</span> <span class="fn">DATE_TRUNC</span>(<span class="st">'month'</span>, subbed_at)) total_subs
+<span class="kw">FROM</span> subscription <span class="kw">GROUP BY</span> chan_id, <span class="nm">2</span>;
+
+<span class="cm">-- Q7: Top creators by total views</span>
+<span class="kw">SELECT</span> u.username, <span class="fn">SUM</span>(v.views) total_views,
+  <span class="fn">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fn">SUM</span>(v.views) <span class="kw">DESC</span>) creator_rank
+<span class="kw">FROM</span> users u <span class="kw">JOIN</span> channel c <span class="kw">ON</span> u.user_id = c.owner_id
+<span class="kw">JOIN</span> video v <span class="kw">ON</span> c.chan_id = v.chan_id
+<span class="kw">GROUP BY</span> u.user_id, u.username;
+
+<span class="cm">-- Q8: Comments with reply count (self-join)</span>
+<span class="kw">SELECT</span> c.comm_id, c.text, <span class="fn">COUNT</span>(r.comm_id) reply_count
+<span class="kw">FROM</span> comment c
+<span class="kw">LEFT JOIN</span> comment r <span class="kw">ON</span> r.parent_comm_id = c.comm_id
+<span class="kw">WHERE</span> c.parent_comm_id <span class="kw">IS NULL</span>
+<span class="kw">GROUP BY</span> c.comm_id, c.text;
+
+<span class="cm">-- Q9: Videos watched >80% completion</span>
+<span class="kw">SELECT</span> wh.user_id, v.title,
+  wh.progress_seconds * <span class="nm">100.0</span> / v.duration pct_watched
+<span class="kw">FROM</span> watch_history wh <span class="kw">JOIN</span> video v <span class="kw">ON</span> wh.video_id = v.video_id
+<span class="kw">WHERE</span> wh.progress_seconds * <span class="nm">100.0</span> / v.duration > <span class="nm">80</span>;
+
+<span class="cm">-- Q10: Dormant channels (no video in 90 days)</span>
+<span class="kw">SELECT</span> c.name, <span class="fn">MAX</span>(v.uploaded_at) last_upload
+<span class="kw">FROM</span> channel c <span class="kw">LEFT JOIN</span> video v <span class="kw">ON</span> c.chan_id = v.chan_id
+<span class="kw">GROUP BY</span> c.chan_id, c.name
+<span class="kw">HAVING</span> last_upload &lt; <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'90 days'</span>
+  <span class="kw">OR</span> last_upload <span class="kw">IS NULL</span>;
+
+<span class="cm">-- Q11-20: Batch queries</span>
+<span class="cm">-- Q11: PERCENTILE of video views</span>
+<span class="kw">SELECT</span> title, views,
+  <span class="fn">PERCENT_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> views) pct_rank
+<span class="kw">FROM</span> video;
+
+<span class="cm">-- Q12: Videos by category popularity (JOIN + CASE)</span>
+<span class="kw">SELECT</span> category,
+  <span class="fn">SUM</span>(views) total_views,
+  <span class="kw">CASE WHEN</span> <span class="fn">SUM</span>(views) > <span class="nm">1000000</span> <span class="kw">THEN</span> <span class="st">'VIRAL'</span>
+       <span class="kw">WHEN</span> <span class="fn">SUM</span>(views) > <span class="nm">100000</span>  <span class="kw">THEN</span> <span class="st">'POPULAR'</span>
+       <span class="kw">ELSE</span> <span class="st">'NICHE'</span> <span class="kw">END</span> tier
+<span class="kw">FROM</span> video <span class="kw">GROUP BY</span> category;
+
+<span class="cm">-- Q13: 7-day rolling average views</span>
+<span class="kw">SELECT</span> video_id, <span class="fn">DATE</span>(watched_at),
+  <span class="fn">AVG</span>(<span class="fn">COUNT</span>(*)) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> video_id
+    <span class="kw">ORDER BY</span> <span class="fn">DATE</span>(watched_at) <span class="kw">ROWS</span> <span class="nm">6</span> <span class="kw">PRECEDING</span>) rolling_avg
+<span class="kw">FROM</span> watch_history <span class="kw">GROUP BY</span> video_id, <span class="fn">DATE</span>(watched_at);
+
+<span class="cm">-- Q14: User subscription feed (latest from subscribed channels)</span>
+<span class="kw">SELECT</span> v.* <span class="kw">FROM</span> video v
+<span class="kw">WHERE</span> v.chan_id <span class="kw">IN</span> (
+  <span class="kw">SELECT</span> chan_id <span class="kw">FROM</span> subscription <span class="kw">WHERE</span> user_id = <span class="nm">1</span>
+) <span class="kw">ORDER BY</span> v.uploaded_at <span class="kw">DESC LIMIT</span> <span class="nm">20</span>;
+
+<span class="cm">-- Q15: Increment view count atomically</span>
+<span class="kw">UPDATE</span> video <span class="kw">SET</span> views = views + <span class="nm">1</span> <span class="kw">WHERE</span> video_id = <span class="nm">101</span>;
+
+<span class="cm">-- Q16: Find spam comments (same text many times)</span>
+<span class="kw">SELECT</span> user_id, text, <span class="fn">COUNT</span>(*) cnt
+<span class="kw">FROM</span> comment <span class="kw">GROUP BY</span> user_id, text <span class="kw">HAVING</span> cnt > <span class="nm">5</span>;
+
+<span class="cm">-- Q17: Playlist video count</span>
+<span class="kw">SELECT</span> p.name, <span class="fn">COUNT</span>(pv.video_id) video_count
+<span class="kw">FROM</span> playlist p <span class="kw">LEFT JOIN</span> playlist_video pv <span class="kw">ON</span> p.playlist_id = pv.playlist_id
+<span class="kw">GROUP BY</span> p.playlist_id, p.name;
+
+<span class="cm">-- Q18: Videos with no comments</span>
+<span class="kw">SELECT</span> v.title <span class="kw">FROM</span> video v
+<span class="kw">LEFT JOIN</span> comment c <span class="kw">ON</span> v.video_id = c.video_id
+<span class="kw">WHERE</span> c.comm_id <span class="kw">IS NULL</span>;
+
+<span class="cm">-- Q19: Average watch duration by device type</span>
+<span class="kw">SELECT</span> device_type, <span class="fn">AVG</span>(progress_seconds) avg_watch
+<span class="kw">FROM</span> watch_history <span class="kw">GROUP BY</span> device_type;
+
+<span class="cm">-- Q20: Create view for channel dashboard</span>
+<span class="kw">CREATE VIEW</span> channel_dashboard <span class="kw">AS</span>
+<span class="kw">SELECT</span> c.name, <span class="fn">COUNT</span>(v.video_id) videos,
+  <span class="fn">SUM</span>(v.views) total_views, c.subscriber_count
+<span class="kw">FROM</span> channel c <span class="kw">LEFT JOIN</span> video v <span class="kw">ON</span> c.chan_id = v.chan_id
+<span class="kw">GROUP BY</span> c.chan_id, c.name, c.subscriber_count;</pre>
+    </div>
+  </div>
+
+  <div id="streaming-java" class="sec-content">
+    <div class="section-header">Streaming — Java OOP + DSA</div>
+    <div class="card">
+      <h3>☕ Implementation</h3>
+<pre><span class="cm">// ===== VIDEO (Builder Pattern) =====</span>
+<span class="kw">public class</span> <span class="cl">Video</span> {
+    <span class="kw">private final</span> <span class="dtype">String</span> videoId, title, url;
+    <span class="kw">private final</span> <span class="dtype">int</span> duration;
+    <span class="kw">private volatile long</span> views; <span class="cm">// volatile for concurrent view count</span>
+
+    <span class="kw">private</span> <span class="cl">Video</span>(<span class="cl">Builder</span> b) {
+        <span class="kw">this</span>.videoId = b.videoId; <span class="kw">this</span>.title = b.title;
+        <span class="kw">this</span>.url = b.url; <span class="kw">this</span>.duration = b.duration;
+    }
+    <span class="kw">public static class</span> <span class="cl">Builder</span> {
+        <span class="dtype">String</span> videoId, title, url; <span class="dtype">int</span> duration;
+        <span class="kw">public</span> <span class="cl">Builder</span> <span class="fn">videoId</span>(<span class="dtype">String</span> v) { <span class="kw">this</span>.videoId=v; <span class="kw">return this</span>; }
+        <span class="kw">public</span> <span class="cl">Builder</span> <span class="fn">title</span>(<span class="dtype">String</span> t)   { <span class="kw">this</span>.title=t;   <span class="kw">return this</span>; }
+        <span class="kw">public</span> <span class="cl">Video</span> <span class="fn">build</span>() { <span class="kw">return new</span> <span class="cl">Video</span>(<span class="kw">this</span>); }
+    }
+}
+
+<span class="cm">// ===== RECOMMENDATION (Graph BFS — "users who watched X also watched") =====</span>
+<span class="kw">public class</span> <span class="cl">RecommendationEngine</span> {
+    <span class="cm">// Adjacency list: video -> related videos</span>
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">List</span>&lt;<span class="dtype">String</span>&gt;&gt; graph = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+
+    <span class="kw">public</span> <span class="cl">List</span>&lt;<span class="dtype">String</span>&gt; <span class="fn">getRecommendations</span>(<span class="dtype">String</span> seed, <span class="dtype">int</span> limit) {
+        <span class="cl">Queue</span>&lt;<span class="dtype">String</span>&gt; queue = <span class="kw">new</span> <span class="cl">LinkedList</span>&lt;&gt;();
+        <span class="cl">Set</span>&lt;<span class="dtype">String</span>&gt; visited = <span class="kw">new</span> <span class="cl">HashSet</span>&lt;&gt;();
+        <span class="cl">List</span>&lt;<span class="dtype">String</span>&gt; result = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+
+        queue.<span class="fn">offer</span>(seed); visited.<span class="fn">add</span>(seed);
+        <span class="kw">while</span> (!queue.<span class="fn">isEmpty</span>() && result.<span class="fn">size</span>() &lt; limit) {
+            <span class="dtype">String</span> curr = queue.<span class="fn">poll</span>();
+            <span class="kw">for</span> (<span class="dtype">String</span> neighbor : graph.<span class="fn">getOrDefault</span>(curr, <span class="cl">List</span>.<span class="fn">of</span>())) {
+                <span class="kw">if</span> (visited.<span class="fn">add</span>(neighbor)) {
+                    result.<span class="fn">add</span>(neighbor);
+                    queue.<span class="fn">offer</span>(neighbor);
+                }
+            }
+        }
+        <span class="kw">return</span> result;
+    }
+}
+
+<span class="cm">// ===== VIEW COUNT (AtomicLong for thread-safety) =====</span>
+<span class="kw">public class</span> <span class="cl">ViewCounter</span> {
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">AtomicLong</span>&gt; counts = <span class="kw">new</span> <span class="cl">ConcurrentHashMap</span>&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">increment</span>(<span class="dtype">String</span> videoId) {
+        counts.<span class="fn">computeIfAbsent</span>(videoId, k -> <span class="kw">new</span> <span class="cl">AtomicLong</span>(<span class="nm">0</span>)).<span class="fn">incrementAndGet</span>();
+    }
+    <span class="kw">public long</span> <span class="fn">getCount</span>(<span class="dtype">String</span> videoId) {
+        <span class="kw">return</span> counts.<span class="fn">getOrDefault</span>(videoId, <span class="kw">new</span> <span class="cl">AtomicLong</span>(<span class="nm">0</span>)).<span class="fn">get</span>();
+    }
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DELIVERY ==================== -->
+<div id="app-delivery" class="app-content">
+  <div class="section-tabs">
+    <button class="sec-tab active" onclick="showSection('delivery','uml')">📐 UML</button>
+    <button class="sec-tab" onclick="showSection('delivery','sysdesign')">🏗 System Design</button>
+    <button class="sec-tab" onclick="showSection('delivery','sql')">🗄 SQL + ER</button>
+    <button class="sec-tab" onclick="showSection('delivery','java')">☕ Java OOP + DSA</button>
+  </div>
+
+  <div id="delivery-uml" class="sec-content active">
+    <div class="section-header">Online Delivery App — UML</div>
+    <div class="card">
+      <h3>📦 Class Diagram</h3>
+      <div class="diagram-box">
++----------+    +-----------+    +-----------+    +----------+
+| Customer |    | Restaurant|    |   Order   |    | Delivery |
++----------+    +-----------+    +-----------+    | Partner  |
+| -custId  |    | -restId   |    | -orderId  |    +----------+
+| -name    |1──<| -name     |1──<| -custId   |    | -partnerId|
+| -address |    | -address  |    | -items[]  |    | -location |
+| -cart    |    | -menu[]   |    | -total    |4──>| -status  |
++----------+    | -rating   |    | -status   |    | -vehicle |
+                +-----------+    | -partnerId|    +----------+
+                     |           +-----------+
+                +----------+
+                | MenuItem  |
+                +----------+
+                | -itemId   |
+                | -name     |
+                | -price    |
+                | -category |
+                | -isAvail  |
+                +----------+</div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>🔁 Sequence — Track Order</h3>
+        <div class="diagram-box">
+Customer  App  OrderSvc  DeliverySvc  Driver  Maps
+   |       |       |          |          |       |
+   |--track(orderId)-->        |          |       |
+   |       |       |--getStatus()-------> |       |
+   |       |       |<---location(lat,lng)-|       |
+   |       |       |--calcETA(loc)--------|------>|
+   |       |       |<-----------eta-------|-------|
+   |<--liveLocation+ETA---------|          |       |</div>
+      </div>
+      <div class="card">
+        <h3>⚡ Activity — Order Flow</h3>
+        <div class="diagram-box">
+[Start] → [Browse Restaurants]
+           ↓
+[Add Items to Cart]
+           ↓
+[Apply Coupon?] → Yes → [Validate Coupon]
+           ↓
+[Select Address + Payment]
+           ↓
+[Place Order] → [Restaurant Confirms?]
+                      ↓ No → [Cancel + Refund]
+                      ↓ Yes
+           [Assign Delivery Partner]
+                      ↓
+           [Partner Picks Up]
+                      ↓
+           [Live Tracking]
+                      ↓
+           [Delivered] → [Rate & Review] → [End]</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="delivery-sysdesign" class="sec-content">
+    <div class="section-header">Delivery App — System Design</div>
+    <div class="card">
+      <h3>🏗 Architecture + Location Tracking</h3>
+      <div class="arch-row">
+        <div class="arch-box highlight">Customer App</div>
+        <div class="arch-box highlight">Driver App</div>
+        <div class="arch-box highlight">Restaurant Portal</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ WebSocket (real-time) + REST</div>
+      <div class="arch-row">
+        <div class="arch-box yellow">API Gateway</div>
+        <div class="arch-box yellow">WebSocket Server</div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box green">Order Service</div>
+        <div class="arch-box green">Location Service</div>
+        <div class="arch-box green">Driver Matching</div>
+        <div class="arch-box green">ETA Service</div>
+        <div class="arch-box green">Notification</div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box purple">PostgreSQL</div>
+        <div class="arch-box purple">Redis GeoHash</div>
+        <div class="arch-box purple">Kafka (location events)</div>
+      </div>
+    </div>
+    <div class="tip">💡 <strong>Driver Matching:</strong> Use Redis GEO commands (GEOADD, GEORADIUS) to find nearest available drivers in O(log N). Assign based on proximity + rating + availability.</div>
+  </div>
+
+  <div id="delivery-sql" class="sec-content">
+    <div class="section-header">Delivery App — ER + SQL</div>
+    <div class="card">
+      <h3>📊 ER + Schema</h3>
+      <div class="diagram-box">
+CUSTOMER ──< ORDER ──< ORDER_ITEM >── MENU_ITEM >── RESTAURANT
+                |
+           DELIVERY_PARTNER
+
+Tables:
+customer(custId, name, email, phone, lat, lng)
+restaurant(restId, name, address, lat, lng, rating, isOpen)
+menu_item(itemId, restId, name, price, category, isAvail)
+orders(ordId, custId, restId, partnerId, status, totalAmt, createdAt)
+order_item(ordItemId, ordId, itemId, qty, price)
+delivery_partner(partnerId, name, phone, lat, lng, status, vehicleType)
+delivery_track(trackId, ordId, lat, lng, recordedAt)</div>
+    </div>
+    <div class="card">
+      <h3>🔍 20 SQL Queries — Delivery</h3>
+<pre><span class="cm">-- Q1: Nearby restaurants using geo distance formula</span>
+<span class="kw">SELECT</span> name, address,
+  (<span class="nm">6371</span> * <span class="fn">ACOS</span>(<span class="fn">SIN</span>(<span class="fn">RADIANS</span>(<span class="nm">13.08</span>)) * <span class="fn">SIN</span>(<span class="fn">RADIANS</span>(lat))
+  + <span class="fn">COS</span>(<span class="fn">RADIANS</span>(<span class="nm">13.08</span>)) * <span class="fn">COS</span>(<span class="fn">RADIANS</span>(lat))
+  * <span class="fn">COS</span>(<span class="fn">RADIANS</span>(lng - <span class="nm">80.27</span>)))) <span class="kw">AS</span> dist_km
+<span class="kw">FROM</span> restaurant
+<span class="kw">WHERE</span> is_open = <span class="kw">TRUE HAVING</span> dist_km &lt; <span class="nm">5</span>
+<span class="kw">ORDER BY</span> dist_km;
+
+<span class="cm">-- Q2: Most ordered items</span>
+<span class="kw">SELECT</span> mi.name, <span class="fn">SUM</span>(oi.qty) total_ordered
+<span class="kw">FROM</span> order_item oi <span class="kw">JOIN</span> menu_item mi <span class="kw">ON</span> oi.item_id = mi.item_id
+<span class="kw">GROUP BY</span> mi.name <span class="kw">ORDER BY</span> total_ordered <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q3: Average delivery time per partner (TIMESTAMPDIFF)</span>
+<span class="kw">SELECT</span> partner_id,
+  <span class="fn">AVG</span>(<span class="fn">TIMESTAMPDIFF</span>(<span class="kw">MINUTE</span>, created_at, delivered_at)) avg_mins
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = <span class="st">'DELIVERED'</span>
+<span class="kw">GROUP BY</span> partner_id;
+
+<span class="cm">-- Q4: Revenue per restaurant with rank</span>
+<span class="kw">SELECT</span> r.name, <span class="fn">SUM</span>(o.total_amt) revenue,
+  <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fn">SUM</span>(o.total_amt) <span class="kw">DESC</span>) rnk
+<span class="kw">FROM</span> restaurant r <span class="kw">JOIN</span> orders o <span class="kw">ON</span> r.rest_id = o.rest_id
+<span class="kw">GROUP BY</span> r.name;
+
+<span class="cm">-- Q5: Peak hour analysis</span>
+<span class="kw">SELECT</span> <span class="fn">HOUR</span>(created_at) hour, <span class="fn">COUNT</span>(*) order_count
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> <span class="fn">HOUR</span>(created_at) <span class="kw">ORDER BY</span> order_count <span class="kw">DESC</span>;
+
+<span class="cm">-- Q6: Cancelled orders by restaurant</span>
+<span class="kw">SELECT</span> r.name, <span class="fn">COUNT</span>(*) cancelled,
+  <span class="fn">COUNT</span>(*) * <span class="nm">100.0</span> / <span class="fn">SUM</span>(<span class="fn">COUNT</span>(*)) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> o.rest_id) cancel_rate
+<span class="kw">FROM</span> orders o <span class="kw">JOIN</span> restaurant r <span class="kw">ON</span> o.rest_id = r.rest_id
+<span class="kw">WHERE</span> o.status = <span class="st">'CANCELLED'</span>
+<span class="kw">GROUP BY</span> r.name, o.rest_id;
+
+<span class="cm">-- Q7: Customers with most orders (loyal customers)</span>
+<span class="kw">SELECT</span> c.name, <span class="fn">COUNT</span>(o.ord_id) total_orders, <span class="fn">SUM</span>(o.total_amt) total_spent
+<span class="kw">FROM</span> customer c <span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.cust_id = o.cust_id
+<span class="kw">GROUP BY</span> c.cust_id, c.name
+<span class="kw">ORDER BY</span> total_orders <span class="kw">DESC LIMIT</span> <span class="nm">20</span>;
+
+<span class="cm">-- Q8: CTE — orders with full details</span>
+<span class="kw">WITH</span> order_details <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> o.ord_id, c.name cust, r.name rest, p.name partner,
+    o.status, o.total_amt
+  <span class="kw">FROM</span> orders o
+  <span class="kw">JOIN</span> customer c <span class="kw">ON</span> o.cust_id = c.cust_id
+  <span class="kw">JOIN</span> restaurant r <span class="kw">ON</span> o.rest_id = r.rest_id
+  <span class="kw">LEFT JOIN</span> delivery_partner p <span class="kw">ON</span> o.partner_id = p.partner_id
+)
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> order_details <span class="kw">WHERE</span> status = <span class="st">'IN_TRANSIT'</span>;
+
+<span class="cm">-- Q9: Items never ordered (dead menu)</span>
+<span class="kw">SELECT</span> mi.name <span class="kw">FROM</span> menu_item mi
+<span class="kw">LEFT JOIN</span> order_item oi <span class="kw">ON</span> mi.item_id = oi.item_id
+<span class="kw">WHERE</span> oi.ord_item_id <span class="kw">IS NULL</span>;
+
+<span class="cm">-- Q10: Driver utilization (orders delivered per day)</span>
+<span class="kw">SELECT</span> partner_id, <span class="fn">DATE</span>(delivered_at), <span class="fn">COUNT</span>(*) deliveries
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = <span class="st">'DELIVERED'</span>
+<span class="kw">GROUP BY</span> partner_id, <span class="fn">DATE</span>(delivered_at);
+
+<span class="cm">-- Q11-20: Additional queries</span>
+<span class="cm">-- Q11: Menu item availability toggle</span>
+<span class="kw">UPDATE</span> menu_item <span class="kw">SET</span> is_avail = <span class="kw">NOT</span> is_avail <span class="kw">WHERE</span> item_id = <span class="nm">42</span>;
+
+<span class="cm">-- Q12: Average rating per restaurant (from orders)</span>
+<span class="kw">SELECT</span> rest_id, <span class="fn">AVG</span>(rating) avg_rating, <span class="fn">COUNT</span>(*) rated_orders
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> rating <span class="kw">IS NOT NULL GROUP BY</span> rest_id;
+
+<span class="cm">-- Q13: Weekend vs weekday order volume</span>
+<span class="kw">SELECT</span>
+  <span class="kw">CASE WHEN</span> <span class="fn">DAYOFWEEK</span>(created_at) <span class="kw">IN</span>(<span class="nm">1</span>,<span class="nm">7</span>) <span class="kw">THEN</span> <span class="st">'WEEKEND'</span>
+       <span class="kw">ELSE</span> <span class="st">'WEEKDAY'</span> <span class="kw">END</span> day_type,
+  <span class="fn">COUNT</span>(*) orders, <span class="fn">AVG</span>(total_amt) avg_value
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> <span class="nm">1</span>;
+
+<span class="cm">-- Q14: First order per customer (ROW_NUMBER)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> *, <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> cust_id <span class="kw">ORDER BY</span> created_at) rn
+  <span class="kw">FROM</span> orders
+) t <span class="kw">WHERE</span> rn = <span class="nm">1</span>;
+
+<span class="cm">-- Q15: Restaurant open hours compliance</span>
+<span class="kw">SELECT</span> r.name, o.created_at, <span class="fn">TIME</span>(o.created_at) order_time
+<span class="kw">FROM</span> orders o <span class="kw">JOIN</span> restaurant r <span class="kw">ON</span> o.rest_id = r.rest_id
+<span class="kw">WHERE</span> <span class="fn">TIME</span>(o.created_at) <span class="kw">NOT BETWEEN</span> r.open_time <span class="kw">AND</span> r.close_time;
+
+<span class="cm">-- Q16: Moving average of orders</span>
+<span class="kw">SELECT</span> <span class="fn">DATE</span>(created_at),
+  <span class="fn">AVG</span>(<span class="fn">COUNT</span>(*)) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> <span class="fn">DATE</span>(created_at) <span class="kw">ROWS</span> <span class="nm">6</span> <span class="kw">PRECEDING</span>) week_avg
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> <span class="fn">DATE</span>(created_at);
+
+<span class="cm">-- Q17: Subquery — partners above avg deliveries</span>
+<span class="kw">SELECT</span> partner_id, <span class="fn">COUNT</span>(*) deliveries
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> status=<span class="st">'DELIVERED'</span>
+<span class="kw">GROUP BY</span> partner_id
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) > (<span class="kw">SELECT AVG</span>(cnt) <span class="kw">FROM</span>
+  (<span class="kw">SELECT COUNT</span>(*) cnt <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status=<span class="st">'DELIVERED'</span> <span class="kw">GROUP BY</span> partner_id) sub);
+
+<span class="cm">-- Q18: UNION — all active users (customers + partners)</span>
+<span class="kw">SELECT</span> <span class="st">'CUSTOMER'</span> role, name, phone <span class="kw">FROM</span> customer
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> <span class="st">'PARTNER'</span>, name, phone <span class="kw">FROM</span> delivery_partner <span class="kw">WHERE</span> status=<span class="st">'ACTIVE'</span>;
+
+<span class="cm">-- Q19: Create index for performance</span>
+<span class="kw">CREATE INDEX</span> idx_orders_status <span class="kw">ON</span> orders(status, created_at);
+<span class="kw">CREATE INDEX</span> idx_orders_cust   <span class="kw">ON</span> orders(cust_id);
+
+<span class="cm">-- Q20: Delete old completed orders (archival)</span>
+<span class="kw">DELETE FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'DELIVERED'</span>
+  <span class="kw">AND</span> created_at &lt; <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'1 year'</span>;</pre>
+    </div>
+  </div>
+
+  <div id="delivery-java" class="sec-content">
+    <div class="section-header">Delivery — Java OOP + DSA</div>
+    <div class="card">
+      <h3>☕ Implementation</h3>
+<pre><span class="cm">// ===== DRIVER MATCHING (Greedy + PriorityQueue) =====</span>
+<span class="kw">public class</span> <span class="cl">DriverMatchingService</span> {
+    <span class="cm">// Min-heap by distance to order location</span>
+    <span class="kw">public</span> <span class="cl">Optional</span>&lt;<span class="cl">Driver</span>&gt; <span class="fn">findNearest</span>(<span class="dtype">double</span> lat, <span class="dtype">double</span> lng,
+                                           <span class="cl">List</span>&lt;<span class="cl">Driver</span>&gt; available) {
+        <span class="kw">return</span> available.<span class="fn">stream</span>()
+            .<span class="fn">filter</span>(<span class="cl">Driver</span>::<span class="fn">isAvailable</span>)
+            .<span class="fn">min</span>(<span class="cl">Comparator</span>.<span class="fn">comparingDouble</span>(d ->
+                <span class="fn">haversine</span>(lat, lng, d.<span class="fn">getLat</span>(), d.<span class="fn">getLng</span>())));
+    }
+    <span class="cm">// Haversine formula for geo distance</span>
+    <span class="kw">private double</span> <span class="fn">haversine</span>(<span class="dtype">double</span> lat1, <span class="dtype">double</span> lon1, <span class="dtype">double</span> lat2, <span class="dtype">double</span> lon2) {
+        <span class="dtype">double</span> R = <span class="nm">6371</span>;
+        <span class="dtype">double</span> dLat = <span class="cl">Math</span>.<span class="fn">toRadians</span>(lat2 - lat1);
+        <span class="dtype">double</span> dLon = <span class="cl">Math</span>.<span class="fn">toRadians</span>(lon2 - lon1);
+        <span class="dtype">double</span> a = <span class="cl">Math</span>.<span class="fn">sin</span>(dLat/<span class="nm">2</span>) * <span class="cl">Math</span>.<span class="fn">sin</span>(dLat/<span class="nm">2</span>)
+            + <span class="cl">Math</span>.<span class="fn">cos</span>(<span class="cl">Math</span>.<span class="fn">toRadians</span>(lat1)) * <span class="cl">Math</span>.<span class="fn">cos</span>(<span class="cl">Math</span>.<span class="fn">toRadians</span>(lat2))
+            * <span class="cl">Math</span>.<span class="fn">sin</span>(dLon/<span class="nm">2</span>) * <span class="cl">Math</span>.<span class="fn">sin</span>(dLon/<span class="nm">2</span>);
+        <span class="kw">return</span> R * <span class="nm">2</span> * <span class="cl">Math</span>.<span class="fn">atan2</span>(<span class="cl">Math</span>.<span class="fn">sqrt</span>(a), <span class="cl">Math</span>.<span class="fn">sqrt</span>(<span class="nm">1</span>-a));
+    }
+}
+
+<span class="cm">// ===== ORDER STATE MACHINE (State Pattern) =====</span>
+<span class="kw">public enum</span> <span class="cl">OrderStatus</span> { PLACED, CONFIRMED, PREPARING, PICKED_UP, DELIVERED, CANCELLED }
+
+<span class="kw">public class</span> <span class="cl">Order</span> {
+    <span class="kw">private</span> <span class="cl">OrderStatus</span> status = <span class="cl">OrderStatus</span>.PLACED;
+    <span class="kw">private</span> <span class="cl">List</span>&lt;<span class="cl">StatusChangeListener</span>&gt; listeners = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">advance</span>() {
+        <span class="kw">switch</span>(status) {
+            <span class="kw">case</span> PLACED:   status = <span class="cl">OrderStatus</span>.CONFIRMED;  <span class="kw">break</span>;
+            <span class="kw">case</span> CONFIRMED: status = <span class="cl">OrderStatus</span>.PREPARING; <span class="kw">break</span>;
+            <span class="kw">case</span> PREPARING: status = <span class="cl">OrderStatus</span>.PICKED_UP; <span class="kw">break</span>;
+            <span class="kw">case</span> PICKED_UP: status = <span class="cl">OrderStatus</span>.DELIVERED; <span class="kw">break</span>;
+            <span class="kw">default</span>: <span class="kw">throw new</span> <span class="cl">IllegalStateException</span>();
+        }
+        listeners.<span class="fn">forEach</span>(l -> l.<span class="fn">onStatusChange</span>(status));
+    }
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MESSAGING ==================== -->
+<div id="app-messaging" class="app-content">
+  <div class="section-tabs">
+    <button class="sec-tab active" onclick="showSection('messaging','uml')">📐 UML</button>
+    <button class="sec-tab" onclick="showSection('messaging','sysdesign')">🏗 System Design</button>
+    <button class="sec-tab" onclick="showSection('messaging','sql')">🗄 SQL + ER</button>
+    <button class="sec-tab" onclick="showSection('messaging','java')">☕ Java OOP + DSA</button>
+  </div>
+
+  <div id="messaging-uml" class="sec-content active">
+    <div class="section-header">Messaging App — UML</div>
+    <div class="card">
+      <h3>📦 Class Diagram</h3>
+      <div class="diagram-box">
++----------+    +------------+    +-----------+    +----------+
+|   User   |    | Conversation|   |  Message  |    |  Media   |
++----------+    +------------+    +-----------+    +----------+
+| -userId  |    | -convId    |    | -msgId    |    | -mediaId |
+| -username|    | -type(DM/  |    | -convId   |    | -type    |
+| -phone   |    |   GROUP)   |1──<| -senderId |    | -url     |
+| -status  |    | -members[] |    | -content  |<───| -size    |
+| -avatar  |    | -lastMsg   |    | -type     |    +----------+
++----------+    | -createdAt |    | -status   |
+                +------------+    | -timestamp|
+                                  +-----------+
+
++----------+    +----------+    +----------+
+|  Group   |    | Contact  |    | Reaction |
++----------+    +----------+    +----------+
+| -groupId |    | -userId  |    | -msgId   |
+| -name    |    | -contact |    | -userId  |
+| -admin[] |    | -blocked |    | -emoji   |
+| -members |    +----------+    +----------+
++----------+</div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>🔁 Sequence — Send Message</h3>
+        <div class="diagram-box">
+Sender  App  WebSocket  MsgSvc  PushSvc  Receiver
+  |      |       |         |       |         |
+  |--type()----> |         |       |         |
+  |      |--sendMsg()----> |       |         |
+  |      |       |  --save()       |         |
+  |      |       |  --deliver()--> | --push->|
+  |      |<--ACK(msgId)----|       |         |
+  |      |       |         |----WS deliver-->|
+  |      |       |         |<--readReceipt--|
+  |      |<--(blue tick)---|       |         |</div>
+      </div>
+      <div class="card">
+        <h3>👤 Use Case</h3>
+        <div class="diagram-box">
+     ┌───────────────────────────────┐
+     │      Messaging System         │
+     │                               │
+     │ (Send DM) (Send to Group)     │
+USER┤ (Share Media)(Voice Note)     │
+     │ (React to Msg)(Reply)         │
+     │ (Block User)(Delete Msg)      │
+     │ (Create Group)(Search)        │
+     │ (Online Status)(Read Receipt) │
+     └───────────────────────────────┘</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="messaging-sysdesign" class="sec-content">
+    <div class="section-header">Messaging — System Design</div>
+    <div class="card">
+      <h3>🏗 Architecture</h3>
+      <div class="arch-row">
+        <div class="arch-box highlight">iOS App</div>
+        <div class="arch-box highlight">Android App</div>
+        <div class="arch-box highlight">Web App</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ WebSocket (persistent connection per user)</div>
+      <div class="arch-row">
+        <div class="arch-box yellow">WebSocket Gateway (Netty/Node)</div>
+        <div class="arch-box yellow">Connection Manager</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ Kafka (message fanout)</div>
+      <div class="arch-row">
+        <div class="arch-box green">Message Service</div>
+        <div class="arch-box green">Group Service</div>
+        <div class="arch-box green">Push Notification</div>
+        <div class="arch-box green">Media Service</div>
+        <div class="arch-box green">Presence Service</div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box purple">Cassandra (messages)</div>
+        <div class="arch-box purple">Redis (online status)</div>
+        <div class="arch-box purple">S3 (media)</div>
+        <div class="arch-box purple">MySQL (users/groups)</div>
+      </div>
+    </div>
+    <div class="tip">💡 <strong>Message Ordering:</strong> Use sequence numbers per conversation. Cassandra partition key = (conversation_id), cluster key = (timestamp, message_id) for O(1) retrieval of recent messages.</div>
+  </div>
+
+  <div id="messaging-sql" class="sec-content">
+    <div class="section-header">Messaging App — ER + SQL</div>
+    <div class="card">
+      <h3>📊 ER + Schema</h3>
+<pre><span class="kw">CREATE TABLE</span> users (
+  user_id   <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY</span>, username <span class="dtype">VARCHAR</span>(50) <span class="kw">UNIQUE</span>,
+  phone     <span class="dtype">VARCHAR</span>(15) <span class="kw">UNIQUE</span>, status <span class="dtype">VARCHAR</span>(100), last_seen <span class="dtype">DATETIME</span>
+);
+<span class="kw">CREATE TABLE</span> conversation (
+  conv_id    <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  type       <span class="dtype">ENUM</span>(<span class="st">'DM'</span>,<span class="st">'GROUP'</span>), name <span class="dtype">VARCHAR</span>(100),
+  created_at <span class="dtype">DATETIME</span> <span class="kw">DEFAULT</span> <span class="fn">NOW</span>()
+);
+<span class="kw">CREATE TABLE</span> conversation_member (
+  conv_id   <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> conversation(conv_id),
+  user_id   <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> users(user_id),
+  role      <span class="dtype">ENUM</span>(<span class="st">'ADMIN'</span>,<span class="st">'MEMBER'</span>) <span class="kw">DEFAULT</span> <span class="st">'MEMBER'</span>,
+  joined_at <span class="dtype">DATETIME</span> <span class="kw">DEFAULT</span> <span class="fn">NOW</span>(),
+  <span class="kw">PRIMARY KEY</span>(conv_id, user_id)
+);
+<span class="kw">CREATE TABLE</span> message (
+  msg_id     <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  conv_id    <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> conversation(conv_id),
+  sender_id  <span class="dtype">BIGINT</span> <span class="kw">REFERENCES</span> users(user_id),
+  content    <span class="dtype">TEXT</span>, type <span class="dtype">VARCHAR</span>(20), status <span class="dtype">VARCHAR</span>(10),
+  sent_at    <span class="dtype">DATETIME</span> <span class="kw">DEFAULT</span> <span class="fn">NOW</span>()
+);</pre>
+    </div>
+    <div class="card">
+      <h3>🔍 20 SQL Queries — Messaging</h3>
+<pre><span class="cm">-- Q1: Get inbox — last message in each conversation</span>
+<span class="kw">SELECT</span> conv_id, content, sender_id, sent_at <span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> *, <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> conv_id <span class="kw">ORDER BY</span> sent_at <span class="kw">DESC</span>) rn
+  <span class="kw">FROM</span> message
+) t <span class="kw">WHERE</span> rn = <span class="nm">1</span>;
+
+<span class="cm">-- Q2: Unread message count per conversation for user</span>
+<span class="kw">SELECT</span> conv_id, <span class="fn">COUNT</span>(*) unread
+<span class="kw">FROM</span> message
+<span class="kw">WHERE</span> status = <span class="st">'DELIVERED'</span>
+  <span class="kw">AND</span> sender_id != <span class="nm">1</span>
+  <span class="kw">AND</span> conv_id <span class="kw">IN</span>(<span class="kw">SELECT</span> conv_id <span class="kw">FROM</span> conversation_member <span class="kw">WHERE</span> user_id=<span class="nm">1</span>)
+<span class="kw">GROUP BY</span> conv_id;
+
+<span class="cm">-- Q3: Message history for a conversation (paginated)</span>
+<span class="kw">SELECT</span> m.msg_id, u.username, m.content, m.sent_at
+<span class="kw">FROM</span> message m <span class="kw">JOIN</span> users u <span class="kw">ON</span> m.sender_id = u.user_id
+<span class="kw">WHERE</span> m.conv_id = <span class="nm">42</span>
+<span class="kw">ORDER BY</span> m.sent_at <span class="kw">DESC LIMIT</span> <span class="nm">50</span> <span class="kw">OFFSET</span> <span class="nm">0</span>;
+
+<span class="cm">-- Q4: Most active users (message count)</span>
+<span class="kw">SELECT</span> u.username, <span class="fn">COUNT</span>(m.msg_id) msg_count
+<span class="kw">FROM</span> users u <span class="kw">JOIN</span> message m <span class="kw">ON</span> u.user_id = m.sender_id
+<span class="kw">GROUP BY</span> u.user_id, u.username
+<span class="kw">ORDER BY</span> msg_count <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q5: Group conversations and member count</span>
+<span class="kw">SELECT</span> c.conv_id, c.name, <span class="fn">COUNT</span>(cm.user_id) members
+<span class="kw">FROM</span> conversation c <span class="kw">JOIN</span> conversation_member cm <span class="kw">ON</span> c.conv_id = cm.conv_id
+<span class="kw">WHERE</span> c.type = <span class="st">'GROUP'</span>
+<span class="kw">GROUP BY</span> c.conv_id, c.name <span class="kw">ORDER BY</span> members <span class="kw">DESC</span>;
+
+<span class="cm">-- Q6: Messages with media attachments</span>
+<span class="kw">SELECT</span> m.content, med.type, med.url
+<span class="kw">FROM</span> message m <span class="kw">JOIN</span> media med <span class="kw">ON</span> m.msg_id = med.msg_id
+<span class="kw">WHERE</span> m.conv_id = <span class="nm">42</span>;
+
+<span class="cm">-- Q7: Mutual friends using INTERSECT</span>
+<span class="kw">SELECT</span> contact_id <span class="kw">FROM</span> contact <span class="kw">WHERE</span> user_id = <span class="nm">1</span>
+<span class="kw">INTERSECT</span>
+<span class="kw">SELECT</span> contact_id <span class="kw">FROM</span> contact <span class="kw">WHERE</span> user_id = <span class="nm">2</span>;
+
+<span class="cm">-- Q8: Online users (last seen < 5 min)</span>
+<span class="kw">SELECT</span> user_id, username
+<span class="kw">FROM</span> users
+<span class="kw">WHERE</span> last_seen > <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'5 minutes'</span>;
+
+<span class="cm">-- Q9: Message streak (days with messages)</span>
+<span class="kw">SELECT</span> sender_id, <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> <span class="fn">DATE</span>(sent_at)) active_days
+<span class="kw">FROM</span> message <span class="kw">WHERE</span> sent_at > <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'30 days'</span>
+<span class="kw">GROUP BY</span> sender_id;
+
+<span class="cm">-- Q10: Bulk mark as read</span>
+<span class="kw">UPDATE</span> message <span class="kw">SET</span> status = <span class="st">'READ'</span>
+<span class="kw">WHERE</span> conv_id = <span class="nm">42</span> <span class="kw">AND</span> sender_id != <span class="nm">1</span> <span class="kw">AND</span> status != <span class="st">'READ'</span>;
+
+<span class="cm">-- Q11: Most reacted messages</span>
+<span class="kw">SELECT</span> msg_id, <span class="fn">COUNT</span>(*) reaction_count
+<span class="kw">FROM</span> reaction <span class="kw">GROUP BY</span> msg_id <span class="kw">ORDER BY</span> reaction_count <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q12: Conversations with user (DM lookup)</span>
+<span class="kw">SELECT</span> c.* <span class="kw">FROM</span> conversation c
+<span class="kw">JOIN</span> conversation_member cm1 <span class="kw">ON</span> c.conv_id = cm1.conv_id <span class="kw">AND</span> cm1.user_id = <span class="nm">1</span>
+<span class="kw">JOIN</span> conversation_member cm2 <span class="kw">ON</span> c.conv_id = cm2.conv_id <span class="kw">AND</span> cm2.user_id = <span class="nm">2</span>
+<span class="kw">WHERE</span> c.type = <span class="st">'DM'</span>;
+
+<span class="cm">-- Q13: LAG to find response time between messages</span>
+<span class="kw">SELECT</span> msg_id, sender_id, sent_at,
+  <span class="fn">TIMESTAMPDIFF</span>(<span class="kw">SECOND</span>,
+    <span class="fn">LAG</span>(sent_at) <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> conv_id <span class="kw">ORDER BY</span> sent_at),
+    sent_at) response_secs
+<span class="kw">FROM</span> message <span class="kw">WHERE</span> conv_id = <span class="nm">42</span>;
+
+<span class="cm">-- Q14: Daily message volume</span>
+<span class="kw">SELECT</span> <span class="fn">DATE</span>(sent_at), <span class="fn">COUNT</span>(*) messages
+<span class="kw">FROM</span> message <span class="kw">GROUP BY</span> <span class="fn">DATE</span>(sent_at);
+
+<span class="cm">-- Q15: Delete messages older than 1 year</span>
+<span class="kw">DELETE FROM</span> message <span class="kw">WHERE</span> sent_at &lt; <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="st">'1 year'</span>;
+
+<span class="cm">-- Q16: Soft delete a message</span>
+<span class="kw">UPDATE</span> message <span class="kw">SET</span> content = <span class="st">'This message was deleted'</span>, is_deleted = <span class="kw">TRUE</span>
+<span class="kw">WHERE</span> msg_id = <span class="nm">9999</span>;
+
+<span class="cm">-- Q17: Search messages (LIKE / FULLTEXT)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> message
+<span class="kw">WHERE</span> conv_id = <span class="nm">42</span> <span class="kw">AND</span> content <span class="kw">LIKE</span> <span class="st">'%meeting%'</span>;
+
+<span class="cm">-- Q18: Admin list per group</span>
+<span class="kw">SELECT</span> u.username
+<span class="kw">FROM</span> users u <span class="kw">JOIN</span> conversation_member cm <span class="kw">ON</span> u.user_id = cm.user_id
+<span class="kw">WHERE</span> cm.conv_id = <span class="nm">10</span> <span class="kw">AND</span> cm.role = <span class="st">'ADMIN'</span>;
+
+<span class="cm">-- Q19: Blocked users subquery</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> message
+<span class="kw">WHERE</span> sender_id <span class="kw">NOT IN</span> (
+  <span class="kw">SELECT</span> blocked_id <span class="kw">FROM</span> block_list <span class="kw">WHERE</span> user_id = <span class="nm">1</span>
+);
+
+<span class="cm">-- Q20: Conversation activity heatmap</span>
+<span class="kw">SELECT</span> <span class="fn">HOUR</span>(sent_at) hr, <span class="fn">DAYOFWEEK</span>(sent_at) day, <span class="fn">COUNT</span>(*) msgs
+<span class="kw">FROM</span> message <span class="kw">GROUP BY</span> hr, day <span class="kw">ORDER BY</span> msgs <span class="kw">DESC</span>;</pre>
+    </div>
+  </div>
+
+  <div id="messaging-java" class="sec-content">
+    <div class="section-header">Messaging — Java OOP + DSA</div>
+    <div class="card">
+      <h3>☕ Implementation</h3>
+<pre><span class="cm">// ===== MESSAGE (Enum + Records) =====</span>
+<span class="kw">public enum</span> <span class="cl">MessageType</span> { TEXT, IMAGE, VIDEO, VOICE, FILE }
+<span class="kw">public enum</span> <span class="cl">MessageStatus</span> { SENT, DELIVERED, READ }
+
+<span class="kw">public class</span> <span class="cl">Message</span> {
+    <span class="kw">private final</span> <span class="dtype">String</span> messageId;
+    <span class="kw">private final</span> <span class="dtype">String</span> conversationId;
+    <span class="kw">private final</span> <span class="dtype">String</span> senderId;
+    <span class="kw">private final</span> <span class="dtype">String</span> content;
+    <span class="kw">private final</span> <span class="cl">MessageType</span> type;
+    <span class="kw">private volatile</span> <span class="cl">MessageStatus</span> status;
+    <span class="kw">private final long</span> timestamp;
+}
+
+<span class="cm">// ===== CHAT SERVICE (uses ConcurrentHashMap + LinkedList) =====</span>
+<span class="kw">public class</span> <span class="cl">ChatService</span> {
+    <span class="cm">// conversation_id -> ordered messages (LinkedList preserves order)</span>
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">LinkedList</span>&lt;<span class="cl">Message</span>&gt;&gt; conversations = <span class="kw">new</span> <span class="cl">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="cm">// userId -> websocket session</span>
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">WebSocketSession</span>&gt; sessions = <span class="kw">new</span> <span class="cl">ConcurrentHashMap</span>&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">sendMessage</span>(<span class="cl">Message</span> msg) {
+        conversations
+            .<span class="fn">computeIfAbsent</span>(msg.<span class="fn">getConversationId</span>(), k -> <span class="kw">new</span> <span class="cl">LinkedList</span>&lt;&gt;())
+            .<span class="fn">addLast</span>(msg);
+
+        <span class="cm">// Deliver to all members in conversation</span>
+        getConversationMembers(msg.<span class="fn">getConversationId</span>()).<span class="fn">forEach</span>(memberId -> {
+            <span class="cl">WebSocketSession</span> session = sessions.<span class="fn">get</span>(memberId);
+            <span class="kw">if</span> (session != <span class="kw">null</span> && session.<span class="fn">isOpen</span>()) {
+                session.<span class="fn">send</span>(msg); <span class="cm">// real-time delivery</span>
+                msg.<span class="fn">setStatus</span>(<span class="cl">MessageStatus</span>.DELIVERED);
+            }
+        });
+    }
+
+    <span class="cm">// DSA: Get last N messages efficiently</span>
+    <span class="kw">public</span> <span class="cl">List</span>&lt;<span class="cl">Message</span>&gt; <span class="fn">getRecent</span>(<span class="dtype">String</span> convId, <span class="dtype">int</span> n) {
+        <span class="cl">LinkedList</span>&lt;<span class="cl">Message</span>&gt; msgs = conversations.<span class="fn">getOrDefault</span>(convId, <span class="kw">new</span> <span class="cl">LinkedList</span>&lt;&gt;());
+        <span class="kw">return</span> msgs.<span class="fn">stream</span>().<span class="fn">skip</span>(<span class="cl">Math</span>.<span class="fn">max</span>(<span class="nm">0</span>, msgs.<span class="fn">size</span>()-n)).<span class="fn">collect</span>(<span class="cl">Collectors</span>.<span class="fn">toList</span>());
+    }
+}
+
+<span class="cm">// ===== ONLINE PRESENCE (using HashMap + TTL concept) =====</span>
+<span class="kw">public class</span> <span class="cl">PresenceService</span> {
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">Long</span>&gt; lastSeen = <span class="kw">new</span> <span class="cl">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="kw">private static final long</span> ONLINE_THRESHOLD_MS = <span class="nm">5</span> * <span class="nm">60</span> * <span class="nm">1000</span>; <span class="cm">// 5 min</span>
+
+    <span class="kw">public void</span> <span class="fn">heartbeat</span>(<span class="dtype">String</span> userId) {
+        lastSeen.<span class="fn">put</span>(userId, <span class="cl">System</span>.<span class="fn">currentTimeMillis</span>());
+    }
+    <span class="kw">public boolean</span> <span class="fn">isOnline</span>(<span class="dtype">String</span> userId) {
+        <span class="cl">Long</span> ts = lastSeen.<span class="fn">get</span>(userId);
+        <span class="kw">return</span> ts != <span class="kw">null</span> && (<span class="cl">System</span>.<span class="fn">currentTimeMillis</span>() - ts) &lt; ONLINE_THRESHOLD_MS;
+    }
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LIBRARY ==================== -->
+<div id="app-library" class="app-content">
+  <div class="section-tabs">
+    <button class="sec-tab active" onclick="showSection('library','uml')">📐 UML</button>
+    <button class="sec-tab" onclick="showSection('library','sysdesign')">🏗 System Design</button>
+    <button class="sec-tab" onclick="showSection('library','sql')">🗄 SQL + ER</button>
+    <button class="sec-tab" onclick="showSection('library','java')">☕ Java OOP + DSA</button>
+  </div>
+
+  <div id="library-uml" class="sec-content active">
+    <div class="section-header">Library Management — UML</div>
+    <div class="card">
+      <h3>📦 Class Diagram</h3>
+      <div class="diagram-box">
++-----------+    +-----------+    +-----------+    +----------+
+|   Book    |    |  Member   |    |   Loan    |    | Librarian|
++-----------+    +-----------+    +-----------+    +----------+
+| -isbn     |    | -memberId |    | -loanId   |    | -staffId |
+| -title    |    | -name     |    | -memberId |    | -name    |
+| -author   |1──<| -email    |    | -isbn     |    | -email   |
+| -genre    |    | -phone    |3──<| -issueDate|    +----------+
+| -copies   |    | -loanLimit|    | -dueDate  |
+| -available|    | -type     |    | -returnDt |
++-----------+    +-----------+    | -status   |
+      |                           | -fine     |
++-----------+    +-----------+    +-----------+
+| BookCopy  |    | Reservation|
++-----------+    +-----------+
+| -copyId   |    | -resId    |
+| -isbn     |    | -memberId |
+| -condition|    | -isbn     |
+| -location |    | -resDate  |
++-----------+    +-----------+</div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>🔁 Sequence — Borrow Book</h3>
+        <div class="diagram-box">
+Member  App  LibrarySvc  InventorySvc  DB
+  |      |       |             |        |
+  |--searchBook()-->           |        |
+  |      |       |--checkAvail()------> |
+  |      |<--copies(n)---------|        |
+  |--borrowRequest(isbn)-->    |        |
+  |      |       |--checkEligibility()  |
+  |      |       |--reserveCopy()-----> |
+  |      |       |--createLoan()------> |
+  |<--loanCard(dueDate)------  |        |</div>
+      </div>
+      <div class="card">
+        <h3>👤 Use Case</h3>
+        <div class="diagram-box">
+      ┌───────────────────────────────┐
+      │    Library Management System  │
+      │                               │
+      │ (Search Books)(Borrow Book)   │
+MEMBER┤ (Return Book)(Renew Loan)    │
+      │ (Reserve Book)(Pay Fine)      │
+      │ (View History)                │
+      │                               │
+STAFF─┤ (Issue Book)(Accept Return)  │
+      │ (Add Book)(Manage Members)    │
+      │ (Generate Reports)            │
+      └───────────────────────────────┘</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="library-sysdesign" class="sec-content">
+    <div class="section-header">Library — System Design</div>
+    <div class="card">
+      <h3>🏗 Architecture</h3>
+      <div class="arch-row">
+        <div class="arch-box highlight">Member Web Portal</div>
+        <div class="arch-box highlight">Librarian Desktop App</div>
+        <div class="arch-box highlight">RFID/Barcode Scanner</div>
+      </div>
+      <div class="arch-arrow" style="text-align:center">↓ REST API</div>
+      <div class="arch-row">
+        <div class="arch-box green">Book Catalog Service</div>
+        <div class="arch-box green">Loan Service</div>
+        <div class="arch-box green">Search Service</div>
+        <div class="arch-box green">Fine Service</div>
+        <div class="arch-box green">Notification</div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box purple">MySQL (Loans/Members)</div>
+        <div class="arch-box purple">Elasticsearch (Catalog)</div>
+        <div class="arch-box purple">Redis (Availability Cache)</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="library-sql" class="sec-content">
+    <div class="section-header">Library — ER + SQL</div>
+    <div class="card">
+      <h3>📊 Schema</h3>
+<pre><span class="kw">CREATE TABLE</span> book (
+  isbn       <span class="dtype">VARCHAR</span>(20) <span class="kw">PRIMARY KEY</span>,
+  title      <span class="dtype">VARCHAR</span>(200), author <span class="dtype">VARCHAR</span>(100),
+  genre      <span class="dtype">VARCHAR</span>(50), total_copies <span class="dtype">INT</span>,
+  available  <span class="dtype">INT</span>, published_year <span class="dtype">INT</span>
+);
+<span class="kw">CREATE TABLE</span> member (
+  member_id  <span class="dtype">VARCHAR</span>(20) <span class="kw">PRIMARY KEY</span>,
+  name       <span class="dtype">VARCHAR</span>(100), email <span class="dtype">VARCHAR</span>(100) <span class="kw">UNIQUE</span>,
+  phone      <span class="dtype">VARCHAR</span>(15), type <span class="dtype">VARCHAR</span>(20),
+  loan_limit <span class="dtype">INT</span> <span class="kw">DEFAULT</span> <span class="nm">3</span>, joined_at <span class="dtype">DATE</span>
+);
+<span class="kw">CREATE TABLE</span> loan (
+  loan_id    <span class="dtype">BIGINT</span> <span class="kw">PRIMARY KEY AUTO_INCREMENT</span>,
+  member_id  <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> member(member_id),
+  isbn       <span class="dtype">VARCHAR</span>(20) <span class="kw">REFERENCES</span> book(isbn),
+  issue_date <span class="dtype">DATE</span> <span class="kw">DEFAULT</span>(<span class="fn">CURRENT_DATE</span>),
+  due_date   <span class="dtype">DATE</span>,
+  return_date <span class="dtype">DATE</span>,
+  fine_amount <span class="dtype">DECIMAL</span>(8,2) <span class="kw">DEFAULT</span> <span class="nm">0</span>,
+  status     <span class="dtype">VARCHAR</span>(20) <span class="kw">DEFAULT</span> <span class="st">'ACTIVE'</span>
+);</pre>
+    </div>
+    <div class="card">
+      <h3>🔍 20 SQL Queries — Library</h3>
+<pre><span class="cm">-- Q1: Available books with author</span>
+<span class="kw">SELECT</span> title, author, genre, available <span class="kw">FROM</span> book <span class="kw">WHERE</span> available > <span class="nm">0</span>;
+
+<span class="cm">-- Q2: Overdue loans with fine calculation</span>
+<span class="kw">SELECT</span> m.name, b.title, l.due_date,
+  <span class="fn">DATEDIFF</span>(<span class="fn">CURDATE</span>(), l.due_date) overdue_days,
+  <span class="fn">DATEDIFF</span>(<span class="fn">CURDATE</span>(), l.due_date) * <span class="nm">2.00</span> fine_due
+<span class="kw">FROM</span> loan l
+<span class="kw">JOIN</span> member m <span class="kw">ON</span> l.member_id = m.member_id
+<span class="kw">JOIN</span> book b <span class="kw">ON</span> l.isbn = b.isbn
+<span class="kw">WHERE</span> l.status = <span class="st">'ACTIVE'</span> <span class="kw">AND</span> l.due_date &lt; <span class="fn">CURDATE</span>();
+
+<span class="cm">-- Q3: Most borrowed books</span>
+<span class="kw">SELECT</span> b.title, b.author, <span class="fn">COUNT</span>(l.loan_id) borrow_count
+<span class="kw">FROM</span> book b <span class="kw">JOIN</span> loan l <span class="kw">ON</span> b.isbn = l.isbn
+<span class="kw">GROUP BY</span> b.isbn, b.title, b.author
+<span class="kw">ORDER BY</span> borrow_count <span class="kw">DESC LIMIT</span> <span class="nm">10</span>;
+
+<span class="cm">-- Q4: Members with active loans count</span>
+<span class="kw">SELECT</span> m.name, <span class="fn">COUNT</span>(l.loan_id) active_loans
+<span class="kw">FROM</span> member m <span class="kw">LEFT JOIN</span> loan l
+  <span class="kw">ON</span> m.member_id = l.member_id <span class="kw">AND</span> l.status = <span class="st">'ACTIVE'</span>
+<span class="kw">GROUP BY</span> m.member_id, m.name;
+
+<span class="cm">-- Q5: Members at loan limit (cannot borrow more)</span>
+<span class="kw">SELECT</span> m.name, m.loan_limit, <span class="fn">COUNT</span>(l.loan_id) current_loans
+<span class="kw">FROM</span> member m <span class="kw">JOIN</span> loan l <span class="kw">ON</span> m.member_id = l.member_id
+<span class="kw">WHERE</span> l.status = <span class="st">'ACTIVE'</span>
+<span class="kw">GROUP BY</span> m.member_id, m.name, m.loan_limit
+<span class="kw">HAVING</span> current_loans >= m.loan_limit;
+
+<span class="cm">-- Q6: WINDOW — loan rank per member</span>
+<span class="kw">SELECT</span> member_id, isbn, issue_date,
+  <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> member_id <span class="kw">ORDER BY</span> issue_date) loan_number
+<span class="kw">FROM</span> loan;
+
+<span class="cm">-- Q7: Books never borrowed</span>
+<span class="kw">SELECT</span> b.title, b.author <span class="kw">FROM</span> book b
+<span class="kw">LEFT JOIN</span> loan l <span class="kw">ON</span> b.isbn = l.isbn
+<span class="kw">WHERE</span> l.loan_id <span class="kw">IS NULL</span>;
+
+<span class="cm">-- Q8: Fine collection summary by month</span>
+<span class="kw">SELECT</span> <span class="fn">DATE_FORMAT</span>(return_date, <span class="st">'%Y-%m'</span>) month,
+  <span class="fn">SUM</span>(fine_amount) total_fines
+<span class="kw">FROM</span> loan <span class="kw">WHERE</span> fine_amount > <span class="nm">0</span>
+<span class="kw">GROUP BY</span> month <span class="kw">ORDER BY</span> month;
+
+<span class="cm">-- Q9: Average loan duration</span>
+<span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="fn">DATEDIFF</span>(return_date, issue_date)) avg_loan_days
+<span class="kw">FROM</span> loan <span class="kw">WHERE</span> return_date <span class="kw">IS NOT NULL</span>;
+
+<span class="cm">-- Q10: Books available by genre</span>
+<span class="kw">SELECT</span> genre, <span class="fn">SUM</span>(available) available_copies,
+  <span class="fn">SUM</span>(total_copies) total,
+  <span class="fn">SUM</span>(available) * <span class="nm">100.0</span> / <span class="fn">SUM</span>(total_copies) pct_available
+<span class="kw">FROM</span> book <span class="kw">GROUP BY</span> genre;
+
+<span class="cm">-- Q11: Return book - update availability</span>
+<span class="kw">BEGIN</span>;
+  <span class="kw">UPDATE</span> loan <span class="kw">SET</span> return_date = <span class="fn">CURDATE</span>(), status = <span class="st">'RETURNED'</span>,
+    fine_amount = <span class="fn">GREATEST</span>(<span class="nm">0</span>, <span class="fn">DATEDIFF</span>(<span class="fn">CURDATE</span>(), due_date) * <span class="nm">2</span>)
+  <span class="kw">WHERE</span> loan_id = <span class="nm">501</span>;
+  <span class="kw">UPDATE</span> book <span class="kw">SET</span> available = available + <span class="nm">1</span>
+  <span class="kw">WHERE</span> isbn = (<span class="kw">SELECT</span> isbn <span class="kw">FROM</span> loan <span class="kw">WHERE</span> loan_id = <span class="nm">501</span>);
+<span class="kw">COMMIT</span>;
+
+<span class="cm">-- Q12: Member borrowing history</span>
+<span class="kw">SELECT</span> b.title, l.issue_date, l.due_date, l.return_date, l.fine_amount
+<span class="kw">FROM</span> loan l <span class="kw">JOIN</span> book b <span class="kw">ON</span> l.isbn = b.isbn
+<span class="kw">WHERE</span> l.member_id = <span class="st">'M001'</span> <span class="kw">ORDER BY</span> l.issue_date <span class="kw">DESC</span>;
+
+<span class="cm">-- Q13: Top fine-paying members</span>
+<span class="kw">SELECT</span> m.name, <span class="fn">SUM</span>(l.fine_amount) total_paid
+<span class="kw">FROM</span> member m <span class="kw">JOIN</span> loan l <span class="kw">ON</span> m.member_id = l.member_id
+<span class="kw">WHERE</span> l.fine_amount > <span class="nm">0</span>
+<span class="kw">GROUP BY</span> m.member_id, m.name <span class="kw">ORDER BY</span> total_paid <span class="kw">DESC</span>;
+
+<span class="cm">-- Q14: Reservation queue for a book</span>
+<span class="kw">SELECT</span> r.res_id, m.name, r.res_date,
+  <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> r.isbn <span class="kw">ORDER BY</span> r.res_date) queue_pos
+<span class="kw">FROM</span> reservation r <span class="kw">JOIN</span> member m <span class="kw">ON</span> r.member_id = m.member_id
+<span class="kw">WHERE</span> r.isbn = <span class="st">'978-0132350884'</span>;
+
+<span class="cm">-- Q15: Books due back this week</span>
+<span class="kw">SELECT</span> m.email, b.title, l.due_date
+<span class="kw">FROM</span> loan l
+<span class="kw">JOIN</span> member m <span class="kw">ON</span> l.member_id = m.member_id
+<span class="kw">JOIN</span> book b <span class="kw">ON</span> l.isbn = b.isbn
+<span class="kw">WHERE</span> l.due_date <span class="kw">BETWEEN</span> <span class="fn">CURDATE</span>() <span class="kw">AND</span> <span class="fn">DATE_ADD</span>(<span class="fn">CURDATE</span>(), <span class="kw">INTERVAL</span> <span class="nm">7</span> <span class="kw">DAY</span>)
+  <span class="kw">AND</span> l.status = <span class="st">'ACTIVE'</span>;
+
+<span class="cm">-- Q16: Author popularity</span>
+<span class="kw">SELECT</span> b.author, <span class="fn">COUNT</span>(l.loan_id) total_borrows
+<span class="kw">FROM</span> book b <span class="kw">JOIN</span> loan l <span class="kw">ON</span> b.isbn = l.isbn
+<span class="kw">GROUP BY</span> b.author <span class="kw">ORDER BY</span> total_borrows <span class="kw">DESC</span>;
+
+<span class="cm">-- Q17: CTE — members with outstanding fines</span>
+<span class="kw">WITH</span> fine_summary <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> member_id, <span class="fn">SUM</span>(fine_amount) total_fine
+  <span class="kw">FROM</span> loan <span class="kw">WHERE</span> fine_amount > <span class="nm">0</span> <span class="kw">GROUP BY</span> member_id
+)
+<span class="kw">SELECT</span> m.name, fs.total_fine
+<span class="kw">FROM</span> member m <span class="kw">JOIN</span> fine_summary fs <span class="kw">ON</span> m.member_id = fs.member_id
+<span class="kw">ORDER BY</span> fs.total_fine <span class="kw">DESC</span>;
+
+<span class="cm">-- Q18: Renewal (extend due date)</span>
+<span class="kw">UPDATE</span> loan <span class="kw">SET</span> due_date = <span class="fn">DATE_ADD</span>(due_date, <span class="kw">INTERVAL</span> <span class="nm">14</span> <span class="kw">DAY</span>)
+<span class="kw">WHERE</span> loan_id = <span class="nm">501</span> <span class="kw">AND</span> due_date >= <span class="fn">CURDATE</span>();
+
+<span class="cm">-- Q19: Genre trend by year</span>
+<span class="kw">SELECT</span> b.genre, <span class="fn">YEAR</span>(l.issue_date) yr, <span class="fn">COUNT</span>(*) borrows
+<span class="kw">FROM</span> loan l <span class="kw">JOIN</span> book b <span class="kw">ON</span> l.isbn = b.isbn
+<span class="kw">GROUP BY</span> b.genre, <span class="fn">YEAR</span>(l.issue_date) <span class="kw">ORDER BY</span> yr, borrows <span class="kw">DESC</span>;
+
+<span class="cm">-- Q20: Books with inventory below threshold (reorder)</span>
+<span class="kw">SELECT</span> isbn, title, author, available, total_copies
+<span class="kw">FROM</span> book
+<span class="kw">WHERE</span> available = <span class="nm">0</span>
+<span class="kw">ORDER BY</span> (<span class="kw">SELECT</span> <span class="fn">COUNT</span>(*) <span class="kw">FROM</span> loan <span class="kw">WHERE</span> isbn = book.isbn) <span class="kw">DESC</span>;</pre>
+    </div>
+  </div>
+
+  <div id="library-java" class="sec-content">
+    <div class="section-header">Library — Java OOP + DSA</div>
+    <div class="card">
+      <h3>☕ Implementation</h3>
+<pre><span class="cm">// ===== BOOK CATALOG (uses HashMap + TreeMap) =====</span>
+<span class="kw">public class</span> <span class="cl">Library</span> {
+    <span class="cm">// O(1) lookup by ISBN</span>
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">Book</span>&gt; catalog = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+    <span class="cm">// TreeMap for sorted browsing by title</span>
+    <span class="kw">private</span> <span class="cl">TreeMap</span>&lt;<span class="dtype">String</span>, <span class="cl">Book</span>&gt; byTitle  = <span class="kw">new</span> <span class="cl">TreeMap</span>&lt;&gt;();
+    <span class="cm">// Queue for reservation</span>
+    <span class="kw">private</span> <span class="cl">Map</span>&lt;<span class="dtype">String</span>, <span class="cl">Queue</span>&lt;<span class="cl">Member</span>&gt;&gt; reservations = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+
+    <span class="kw">public</span> <span class="cl">Optional</span>&lt;<span class="cl">Loan</span>&gt; <span class="fn">issueBook</span>(<span class="dtype">String</span> isbn, <span class="cl">Member</span> member) {
+        <span class="cl">Book</span> book = catalog.<span class="fn">get</span>(isbn);
+        <span class="kw">if</span> (book == <span class="kw">null</span> || book.<span class="fn">getAvailable</span>() == <span class="nm">0</span>) {
+            <span class="fn">addReservation</span>(isbn, member);
+            <span class="kw">return</span> <span class="cl">Optional</span>.<span class="fn">empty</span>();
+        }
+        <span class="kw">if</span> (member.<span class="fn">hasReachedLoanLimit</span>()) <span class="kw">throw new</span> <span class="cl">LoanLimitException</span>();
+        book.<span class="fn">decrementAvailable</span>();
+        <span class="kw">return</span> <span class="cl">Optional</span>.<span class="fn">of</span>(<span class="kw">new</span> <span class="cl">Loan</span>(isbn, member, <span class="cl">LocalDate</span>.<span class="fn">now</span>(),
+            <span class="cl">LocalDate</span>.<span class="fn">now</span>().<span class="fn">plusDays</span>(<span class="nm">14</span>)));
+    }
+
+    <span class="kw">public void</span> <span class="fn">returnBook</span>(<span class="cl">Loan</span> loan) {
+        <span class="cl">Book</span> book = catalog.<span class="fn">get</span>(loan.<span class="fn">getIsbn</span>());
+        <span class="dtype">long</span> overdueDays = <span class="cl">ChronoUnit</span>.DAYS.<span class="fn">between</span>(loan.<span class="fn">getDueDate</span>(), <span class="cl">LocalDate</span>.<span class="fn">now</span>());
+        <span class="kw">if</span> (overdueDays > <span class="nm">0</span>) loan.<span class="fn">setFine</span>(overdueDays * <span class="nm">2.0</span>);
+
+        book.<span class="fn">incrementAvailable</span>();
+        loan.<span class="fn">setStatus</span>(<span class="st">"RETURNED"</span>);
+
+        <span class="cm">// Notify next in reservation queue</span>
+        <span class="cl">Queue</span>&lt;<span class="cl">Member</span>&gt; queue = reservations.<span class="fn">get</span>(loan.<span class="fn">getIsbn</span>());
+        <span class="kw">if</span> (queue != <span class="kw">null</span> && !queue.<span class="fn">isEmpty</span>()) {
+            <span class="cl">Member</span> next = queue.<span class="fn">poll</span>();
+            <span class="fn">notifyMember</span>(next, <span class="st">"Book is now available: "</span> + book.<span class="fn">getTitle</span>());
+        }
+    }
+
+    <span class="cm">// DSA: Binary search on sorted title list</span>
+    <span class="kw">public</span> <span class="cl">List</span>&lt;<span class="cl">Book</span>&gt; <span class="fn">searchByTitlePrefix</span>(<span class="dtype">String</span> prefix) {
+        <span class="kw">return new</span> <span class="cl">ArrayList</span>&lt;&gt;(
+            byTitle.<span class="fn">subMap</span>(prefix, prefix + <span class="cl">Character</span>.<span class="fn">MAX_VALUE</span>).<span class="fn">values</span>()
+        );
+    }
+}
+
+<span class="cm">// ===== FINE CALCULATOR (Strategy Pattern) =====</span>
+<span class="kw">public interface</span> <span class="cl">FinePolicy</span> {
+    <span class="dtype">double</span> <span class="fn">calculate</span>(<span class="dtype">long</span> overdueDays);
+}
+<span class="kw">public class</span> <span class="cl">StandardFinePolicy</span> <span class="kw">implements</span> <span class="cl">FinePolicy</span> {
+    <span class="kw">public double</span> <span class="fn">calculate</span>(<span class="dtype">long</span> days) { <span class="kw">return</span> days * <span class="nm">2.0</span>; }
+}
+<span class="kw">public class</span> <span class="cl">PremiumMemberPolicy</span> <span class="kw">implements</span> <span class="cl">FinePolicy</span> {
+    <span class="kw">public double</span> <span class="fn">calculate</span>(<span class="dtype">long</span> days) { <span class="kw">return</span> days * <span class="nm">1.0</span>; } <span class="cm">// 50% discount</span>
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="card" style="margin-top:3rem; text-align:center; background:rgba(0,212,255,0.03);">
+  <div style="font-size:1.5rem; margin-bottom:.5rem;">🎯</div>
+  <div style="font-weight:700; font-size:1rem; color:var(--accent);">Key OOP Principles to Mention in Interview</div>
+  <div style="margin-top:.8rem; display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem;">
+    <span class="tag tag-blue">Encapsulation</span>
+    <span class="tag tag-green">Inheritance</span>
+    <span class="tag tag-purple">Polymorphism</span>
+    <span class="tag tag-yellow">Abstraction</span>
+    <span class="tag tag-blue">SOLID Principles</span>
+    <span class="tag tag-green">Design Patterns (Builder/Strategy/Observer/Factory)</span>
+    <span class="tag tag-purple">Collections: HashMap/TreeMap/PriorityQueue/LinkedList</span>
+    <span class="tag tag-yellow">Thread Safety: synchronized/AtomicLong/ConcurrentHashMap</span>
+    <span class="tag tag-blue">Generics & Streams</span>
+    <span class="tag tag-green">Optional for null safety</span>
+  </div>
+  <div style="margin-top:1.2rem; color:var(--muted); font-size:.82rem;">
+    You've got this. All the best for MrCooper Round 2! 💪
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+function showApp(appName) {
+  document.querySelectorAll('.app-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('#mainNav a').forEach(el => el.classList.remove('active'));
+  document.getElementById('app-' + appName).classList.add('active');
+  document.getElementById('nav-' + appName).classList.add('active');
+}
+
+function showSection(app, section) {
+  const appEl = document.getElementById('app-' + app);
+  appEl.querySelectorAll('.sec-content').forEach(el => el.classList.remove('active'));
+  appEl.querySelectorAll('.sec-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(app + '-' + section).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
